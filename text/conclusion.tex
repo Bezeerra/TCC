@@ -1,0 +1,27 @@
+\chapter{Conclusão}
+
+
+\section{Panorama Geral e Viabilidade do Projeto}
+A proposta de implementação de uma nuvem privada no Instituto Federal de Brasília (IFB), detalhada ao longo deste trabalho, demonstrou-se promissora e possível para atender às demandas acadêmicas e administrativas da instituição. Baseada no OpenStack e utilizando \textit{Kolla-Ansible} para a conteinerização dos serviços, a arquitetura aqui descrita destaca-se pela flexibilidade e escalabilidade, podendo se adaptar a cenários de maiores dimensões e complexidades. Este trabalho apresentou uma análise detalhada das tecnologias envolvidas, destacando o OpenStack como a solução mais adequada para atender às demandas específicas de escalabilidade.
+
+\subsection{Principais Resultados Alcançados}
+Devido às restrições de hardware, o projeto foi desenvolvido em um ambiente de demonstração, com \textit{clusters} e \textit{volumes} reduzidos. Mesmo assim, comprovou-se a viabilidade do modelo conceitual, evidenciando como os serviços (rede, armazenamento e orquestração) interagem e podem ser configurados de forma modular. A utilização de técnicas como \textit{Hierarchical Multitenancy} e \textit{Heat templates} mostrou-se eficaz para organizar projetos e pesquisas, permitindo o gerenciamento de recursos e facilitando a expansão conforme a aquisição de novos nós, junto a adição fácil ao cluster, apenas adicionando o IP ou DNS ao grupo de controle. 
+
+\section{Alinhamento com os Objetivos do Estudo}
+Em relação aos objetivos estabelecidos no início da pesquisa, demonstrou-se que eles podem ser alcançados com o cluster OpenStack, tais como:
+
+\begin{itemize}
+    \item \textbf{Otimização do Uso de Recursos}: Com o OpenStack, é possível compartilhar a mesma máquina para várias instâncias, eliminando a necessidade de dedicar um servidor exclusivo para cada aluno.
+    \item \textbf{Fomento à Pesquisa e Inovação}: A infraestrutura proporcionada permite incentivar novas pesquisas, oferecendo de maneira rápida recursos para os alunos, podendo escalar de acordo com a complexidade da pesquisa.
+    \item \textbf{Segurança e Controle de Dados}: Com o OpenStack, há controle total sobre os dados que transitam na nuvem, eliminando a necessidade de utilizar serviços externos para armazenamento.
+    \item \textbf{Facilitação do Acesso a Serviços de Computação}: Utilizando templates como o Heat, é possível provisionar de maneira ágil a infraestrutura necessária para pesquisas.
+    \item \textbf{Redução da Dependência de Infraestruturas Externas}: Não será mais necessário depender de infraestruturas externas, como o Google Colab. Em casos que exigem o uso de placas de vídeo, também é possível integrá-las ao Cluster OpenStack, desde que o hardware necessário seja adquirido no futuro.
+\end{itemize}
+
+
+\section{Manutenção, Evolução e Monitorameno}
+Quanto à manutenção e à evolução do ambiente, a adoção de contêineres isolados reforçou a facilidade de atualizações, garantindo um processo menos suscetível a falhas e simplificando o gerenciamento de cada componente do OpenStack. Além disso, as ferramentas de monitoramento como (\textit{Ceilometer}) possibilitam acompanhar o desempenho e o uso dos recursos em tempo real, fornecendo dados necessários para futuras otimizações e tomadas de decisão, além disso o própio \textit{Kolla-Ansible} nos entrega os novos containers já pronto com as novas versões e naturalmente com retrocompatibilidade, caso seja necessário uma atualização rápida.
+
+
+\section{Trabalhos Futuros}
+Como trabalho futuro, a partir do momento em que tivermos mais recursos de hardware, poderemos efetuar a construção de um cluster robusto, capaz de suprir as necessidades de infraestrutura no IFB. Adicionalmente, será possível explorar mais os templates Heat e as diversas formas de utilização da arquitetura para os membros do campus, juntamente com a divulgação desse novo serviço para a comunidade do IFB. Acredita-se que, ao disponibilizar uma infraestrutura de nuvem privada robusta, o campus poderá impulsionar projetos de ensino e pesquisa, abrindo espaço para inovações que contribuam significativamente para o desenvolvimento tecnológico.

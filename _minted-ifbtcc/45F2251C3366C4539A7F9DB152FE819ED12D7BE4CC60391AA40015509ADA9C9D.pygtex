@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{source}\PYG{+w}{ }path/venv/bin/activate
+pip\PYG{+w}{ }install\PYG{+w}{ }\PYGZhy{}\PYGZhy{}upgrade\PYG{+w}{ }git+https://opendev.org/openstack/kolla\PYGZhy{}ansible@master
+kolla\PYGZhy{}ansible\PYG{+w}{ }pull
+kolla\PYGZhy{}ansible\PYG{+w}{ }prechecks
+kolla\PYGZhy{}ansible\PYG{+w}{ }upgrade
+kolla\PYGZhy{}ansible\PYG{+w}{ }deploy
+\end{Verbatim}

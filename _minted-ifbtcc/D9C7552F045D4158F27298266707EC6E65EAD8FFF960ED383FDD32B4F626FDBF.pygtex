@@ -1,0 +1,50 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{resources}\PYG{p}{:}
+\PYG{+w}{  }\PYG{n+nt}{project\PYGZus{}network}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{OS::Neutron::Net}
+\PYG{+w}{    }\PYG{n+nt}{properties}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}name}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{n+nt}{project\PYGZus{}subnet}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{OS::Neutron::Subnet}
+\PYG{+w}{    }\PYG{n+nt}{properties}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{network\PYGZus{}id}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}resource}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}network}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{cidr}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{network\PYGZus{}cidr}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{gateway\PYGZus{}ip}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{gateway\PYGZus{}ip}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{dns\PYGZus{}nameservers}\PYG{p}{:}
+\PYG{+w}{        }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{8.8.8.8}
+\PYG{+w}{        }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{8.8.4.4}
+
+\PYG{+w}{  }\PYG{n+nt}{project\PYGZus{}router}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{OS::Neutron::Router}
+\PYG{+w}{    }\PYG{n+nt}{properties}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ str\PYGZus{}replace}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ template}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZob{}project\PYGZus{}name\PYGZcb{}\PYGZhy{}router\PYGZdq{}}\PYG{p+pIndicator}{,}\PYG{n+nt}{ params}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ project\PYGZus{}name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}name}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{n+nt}{router\PYGZus{}interface}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{OS::Neutron::RouterInterface}
+\PYG{+w}{    }\PYG{n+nt}{properties}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{router\PYGZus{}id}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}resource}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}router}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{subnet\PYGZus{}id}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}resource}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}subnet}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{n+nt}{student\PYGZus{}instance}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{OS::Nova::Server}
+\PYG{+w}{    }\PYG{n+nt}{properties}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ str\PYGZus{}replace}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ template}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZob{}project\PYGZus{}name\PYGZcb{}\PYGZhy{}instance\PYGZdq{}}\PYG{p+pIndicator}{,}\PYG{n+nt}{ params}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ project\PYGZus{}name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}name}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{image}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{image\PYGZus{}id}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{flavor}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{flavor}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{networks}\PYG{p}{:}
+\PYG{+w}{        }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{n+nt}{network}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}resource}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}network}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+
+\PYG{n+nt}{outputs}\PYG{p}{:}
+\PYG{+w}{  }\PYG{n+nt}{network\PYGZus{}info}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{Informações da rede criada para o projeto}
+\PYG{+w}{    }\PYG{n+nt}{value}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{network\PYGZus{}name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}resource}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{project\PYGZus{}network}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{subnet\PYGZus{}cidr}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}param}\PYG{p}{:}\PYG{+w}{ }\PYG{n+nv}{network\PYGZus{}cidr}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{n+nt}{instance\PYGZus{}info}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{Informações da instância criada para o aluno}
+\PYG{+w}{    }\PYG{n+nt}{value}\PYG{p}{:}
+\PYG{+w}{      }\PYG{n+nt}{instance\PYGZus{}name}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}attr}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{[}\PYG{n+nv}{student\PYGZus{}instance}\PYG{p+pIndicator}{,}\PYG{+w}{ }\PYG{n+nv}{name}\PYG{p+pIndicator}{]}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{n+nt}{instance\PYGZus{}ip}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZob{}}\PYG{n+nt}{ get\PYGZus{}attr}\PYG{p}{:}\PYG{+w}{ }\PYG{p+pIndicator}{[}\PYG{n+nv}{student\PYGZus{}instance}\PYG{p+pIndicator}{,}\PYG{+w}{ }\PYG{n+nv}{first\PYGZus{}address}\PYG{p+pIndicator}{]}\PYG{+w}{ }\PYG{p+pIndicator}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,56 @@
+Bom dia.
+Seguem considerações sobre o Trabalho: IMPLEMENTAÇÃO DE NUVEM PRIVADA NO IFB: UTILIZAÇÃO EFICIENTE DE RECURSOS COMPUTACIONAIS E FOMENTO À PESQUISA E ENSINO DA COMPUTAÇÃO EM NUVEM - MATHEUS FERNANDES BEZERRA
+
+
+Lembrar de colocar os termos em língua estrangeira em itálico
+
+Itens que não encontrei trabalho:
+Resumo
+Justificativa/Motivação
+Trabalhos correlatos/Revisão da literatura/Mapeamento sistemático.
+
+Introdução
+Corrigir "copm" --> "com"
+
+Na introdução, o autor, contextualizou bem, levantou questões, porém, faltou fechar a introdução com o que será desenvolvido no trabalho.
+
+2.1 Introdução a Virtualização
+Corrigir "depende do de como..."
+
+2.2 Hypervisor Tipo 2
+Corrigir "por opera.." --> "por operar.."
+
+Figuras:
+Figura 2.9 solta/não referenciada no texto
+Figura 3.3 solta/não referenciada no texto
+Figura 3.4 solta/não referenciada no texto
+Figura 3.5 solta/não referenciada no texto
+Figura 3.6 solta/não referenciada no texto
+
+2.4.1 Namespaces
+Verificar:
+"Atualmente, o Linux implementa seis tipos diferentes de namespaces."
+"Existem 7 tipos de namespaces essenciais no Linux"
+
+
+
+
+Sugestões:
+
+- Resumo, abstract, palavras-chave?
+- capítulos de Motivação, justificativa e organização do trabalho?
+- objetivos específicos, reduzir escopo e separar o que é consequência e o que é um objetivo específico. Escopo muito grande
+- Figuras em inglês: colocar todas em português
+- Figura 2.2: Tradução de binárioas retirado de TANENBAUM; BOS (2015) ??? explicar as figuras e melhorar os textos
+- Figuras muito diferentes, em cores, tamanhos, etc. uniformizar.
+- Colocar os trechos de código em formato de tabela/lista/bloco de código
+3.2 Arquitetura Geral
+3.2.1 Visão Geral
+Nenhum texto  entre os itens? explicar o item 3.2 antes do 3.2.1.
+- Explicar todas as figuras.
+-Metodologia: muitas atividades
+- Faltou um mapeamento sistemático ou survey
+- Estrutura da monografia, adequar.
+- acrônimos?
+- Cronograma outro item
+- Avaliar um capítulo de mapeamento sistemático

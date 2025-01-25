@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{kolla\PYGZus{}base\PYGZus{}distro}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}ubuntu\PYGZdq{}}
+
+\PYG{n+nt}{network\PYGZus{}interface}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}enp0s3\PYGZdq{}}
+\PYG{n+nt}{neutron\PYGZus{}external\PYGZus{}interface}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}enp0s8\PYGZdq{}}
+\PYG{n+nt}{kolla\PYGZus{}internal\PYGZus{}vip\PYGZus{}address}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}192.168.68.199\PYGZdq{}}\PYG{+w}{ }\PYG{c+c1}{\PYGZsh{} esse IP tem que estar desalocado}
+\PYG{n+nt}{kolla\PYGZus{}external\PYGZus{}vip\PYGZus{}address}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}192.168.68.199\PYGZdq{}}
+\end{Verbatim}

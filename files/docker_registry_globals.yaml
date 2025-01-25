@@ -1,0 +1,2 @@
+docker_registry: <IP-CONTROLLER>:<port>
+docker_registry_insecure: yes

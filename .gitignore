@@ -1,0 +1,17 @@
+*.synctex.gz
+*.synctex*
+/tmp
+*.out
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.log
+*.lol
+*.toc
+*.lot
+*.lof
+*.gz
+*.out
+*.fls
+.DS_Store

@@ -1,0 +1,35 @@
+\chapter{Metodologia}
+
+A implementação de uma nuvem privada no Instituto Federal de Brasília (IFB) no campus de Taguatinga será conduzida de forma estruturada, abrangendo desde o planejamento inicial da infraestrutura até a implementação técnica e os testes necessários para assegurar o bom funcionamento da solução. A metodologia será dividida em quatro grandes etapas: planejamento da infraestrutura, configuração e implementação técnica, testes de infraestrutura e incentivo ao uso da nuvem privada.
+
+\section{Etapa 1: Planejamento da Infraestrutura}
+
+O primeiro passo para a criação da nuvem privada será a separação de um subconjunto de máquinas do Datacenter já existente no campus de Taguatinga. Será realizado um levantamento de máquinas ociosas e a separação de outras mais potentes, visando testar a escalabilidade do OpenStack como uma solução de nuvem privada. O hardware será reaproveitado para garantir a viabilidade econômica do projeto, e a escolha dos serviços a serem implementados no OpenStack será baseada nas necessidades acadêmicas e administrativas.
+
+Nesta etapa, o planejamento incluirá a identificação dos servidores, processadores, memória RAM, armazenamento e dispositivos de rede no Datacenter do campus, priorizando o uso de máquinas ociosas e hardware remanescente. Em seguida, será realizada a definição dos principais serviços do OpenStack que serão utilizados, como Nova para gerenciamento de instâncias, Neutron para gerenciamento de rede e Swift para armazenamento, de acordo com as necessidades de escalabilidade e gerenciamento da nuvem privada. Finalmente, será feita uma avaliação da capacidade do hardware e da rede do campus para suportar a instalação do OpenStack e a orquestração dos serviços em um ambiente de nuvem privada.
+
+\section{Etapa 2: Configuração e Implementação Técnica}
+
+Após o planejamento da infraestrutura, será iniciada a instalação do OpenStack, configurando cada serviço em suas respectivas máquinas. Existem duas abordagens principais para instalar o OpenStack: via DevStack, voltada para desenvolvedores, ou por meio de um gerenciador de pacotes. Para este projeto, será escolhida a abordagem mais adequada às necessidades do campus, garantindo controle e facilidade de manutenção.
+
+De forma geral a instalação via DevStack garante um ambiente flexível, configurando cada serviço em máquinas específicas e ajustando o \textit{local.conf} de cada máquina para operar em um cluster. A configuração dos serviços será distribuída de forma a garantir o balanceamento de carga, e o Kubernetes poderá ser utilizado em conjunto com o Docker para orquestrar contêineres, aumentando a eficiência da solução. Após a configuração, serão realizados testes básicos de conectividade entre os nós do cluster para garantir que os serviços estão comunicando corretamente e que a nuvem privada está pronta para os próximos passos.
+
+\section{Etapa 3: Testes de Infraestrutura}
+
+Testes de desempenho e saúde da infraestrutura serão realizados para garantir que o cluster da nuvem privada está funcionando corretamente e que a capacidade de expansão da solução está assegurada.
+
+Os testes incluirão a simulação de diferentes níveis de utilização dos recursos, como memória, CPU e rede, para garantir que a infraestrutura pode suportar o uso interno, especialmente durante os períodos de maior demanda acadêmica, tentaremos entender qual vai ser a real necessidade com campus. Além disso, será realizada uma avaliação contínua da saúde do cluster, incluindo a verificação de latência, falhas de comunicação entre nós e monitoramento de uso de recursos para assegurar que a nuvem privada está operando de maneira eficiente. Também serão realizados testes de backup e recuperação de desastres para garantir que os dados e serviços possam ser restaurados rapidamente em caso de falhas.
+
+\section{Etapa 4: Incentivo ao Uso da Nuvem Privada}
+
+Após a implementação técnica e os testes, iniciara o incentivando o uso da nuvem privada em atividades acadêmicas.
+
+As ações a serem realizadas incluem a integração da infraestrutura de nuvem privada dentro das disciplinas, permitindo que os alunos utilizem os recursos de nuvem em atividades práticas e trabalhos. Além disso, queremos que seja promovido o uso da nuvem privada em pesquisas científicas, disponibilizando recursos para que alunos e professores desenvolvam projetos de inovação utilizando a infraestrutura do campus.
+
+Além disso, serão criados exemplos e aplicações práticas para serem utilizadas nas disciplinas do campus, como ambientes de desenvolvimento para projetos dos alunos, laboratórios virtuais e aplicações simples. Queremos que tenha uma interface web fácil de ser utilizado tanto pelos alunos como pelos professores, assegurando que a nuvem seja de fácil uso para todos os membros da comunidade acadêmica.
+
+\section{Monitoramento e Avaliação Contínua}
+
+Finalmente, será implementado um sistema de monitoramento contínuo da nuvem privada, com foco na manutenção da eficiência e na realização de ajustes conforme a demanda evolui.
+
+As ações incluirão o acompanhamento em tempo real do uso de CPU, memória, disco e rede, com alertas em caso de sobrecarga ou falhas. Também será realizada a coleta de feedback regular dos usuários da nuvem para identificar problemas, sugestões de melhorias e novas necessidades. A partir desse feedback, serão realizados ajustes na configuração da infraestrutura e expansão do cluster conforme necessário, garantindo que a solução seja capaz de escalar conforme o aumento da demanda.

@@ -1,0 +1,1 @@
+sudo cat /etc/kolla/passwords.yml | grep "keystone_admin_password"

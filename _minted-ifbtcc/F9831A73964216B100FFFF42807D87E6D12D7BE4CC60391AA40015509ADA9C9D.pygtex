@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{[}database\PYG{o}{]}
+\PYG{n+nv}{connection}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }mysql+pymysql://heat:\PYGZlt{}HEAT\PYGZus{}DB\PYGZus{}PASSWORD\PYGZgt{}@\PYGZlt{}DATABASE\PYGZus{}HOST\PYGZgt{}/heat
+
+\PYG{o}{[}keystone\PYGZus{}authtoken\PYG{o}{]}
+\PYG{n+nv}{www\PYGZus{}authenticate\PYGZus{}uri}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }http://\PYGZlt{}KEYSTONE\PYGZus{}HOST\PYGZgt{}:5000
+\PYG{n+nv}{auth\PYGZus{}url}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }http://\PYGZlt{}KEYSTONE\PYGZus{}HOST\PYGZgt{}:5000
+\PYG{n+nv}{memcached\PYGZus{}servers}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYGZlt{}MEMCACHED\PYGZus{}HOST\PYGZgt{}:11211
+\PYG{n+nv}{auth\PYGZus{}type}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }password
+\PYG{n+nv}{project\PYGZus{}domain\PYGZus{}name}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }default
+\PYG{n+nv}{user\PYGZus{}domain\PYGZus{}name}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }default
+\PYG{n+nv}{project\PYGZus{}name}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }service
+\PYG{n+nv}{username}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }heat
+\PYG{n+nv}{password}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYGZlt{}HEAT\PYGZus{}SERVICE\PYGZus{}PASSWORD\PYGZgt{}
+\end{Verbatim}

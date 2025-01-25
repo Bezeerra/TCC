@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+openstack\PYG{+w}{ }network\PYG{+w}{ }create\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}provider\PYGZhy{}network\PYGZhy{}type\PYG{+w}{ }flat\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}provider\PYGZhy{}physical\PYGZhy{}network\PYG{+w}{ }physnet1\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}external\PYG{+w}{ }external\PYGZhy{}network\PYG{+w}{  }
+
+openstack\PYG{+w}{ }subnet\PYG{+w}{ }create\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}network\PYG{+w}{ }external\PYGZhy{}network\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}subnet\PYGZhy{}range\PYG{+w}{ }\PYG{l+m}{192}.168.1.0/24\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}allocation\PYGZhy{}pool\PYG{+w}{ }\PYG{n+nv}{start}\PYG{o}{=}\PYG{l+m}{192}.168.1.100,end\PYG{o}{=}\PYG{l+m}{192}.168.1.200\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}gateway\PYG{+w}{ }\PYG{l+m}{192}.168.1.1\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}no\PYGZhy{}dhcp\PYG{+w}{ }external\PYGZhy{}subnet
+\end{Verbatim}

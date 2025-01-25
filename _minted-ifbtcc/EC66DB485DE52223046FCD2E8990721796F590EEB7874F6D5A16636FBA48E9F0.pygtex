@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{[all:vars]}
+\PYG{c+c1}{\PYGZsh{} criação de variáveis de ambiente para rodar o multinode}
+\PYG{k}{[all]}
+\PYG{n+na}{192.168.68.101 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{controller ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{n+na}{192.168.68.103 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{storage ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{n+na}{192.168.68.104 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{compute ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{k}{[control]}
+\PYG{n+na}{192.168.68.101 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{controller ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{k}{[network]}
+\PYG{n+na}{192.168.68.101 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{controller ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{k}{[compute]}
+\PYG{n+na}{192.168.68.101 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{controller ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{n+na}{192.168.68.104 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{compute ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{k}{[monitoring]}
+\PYG{n+na}{192.168.68.101 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{controller ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{k}{[storage]}
+\PYG{n+na}{192.168.68.101 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{controller ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\PYG{n+na}{192.168.68.103 ansible\PYGZus{}ssh\PYGZus{}user}\PYG{o}{=}\PYG{l+s}{storage ansible\PYGZus{}become=True ansible\PYGZus{}private\PYGZus{}key\PYGZus{}file=\PYGZti{}/.ssh/id\PYGZus{}rsa}
+\end{Verbatim}

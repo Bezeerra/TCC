@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+openstack\PYG{+w}{ }network\PYG{+w}{ }create\PYG{+w}{ }internal\PYGZhy{}network
+openstack\PYG{+w}{ }subnet\PYG{+w}{ }create\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}network\PYG{+w}{ }internal\PYGZhy{}network\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }\PYGZhy{}\PYGZhy{}subnet\PYGZhy{}range\PYG{+w}{ }\PYG{l+m}{10}.0.0.0/24\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{    }internal\PYGZhy{}subnet
+\end{Verbatim}

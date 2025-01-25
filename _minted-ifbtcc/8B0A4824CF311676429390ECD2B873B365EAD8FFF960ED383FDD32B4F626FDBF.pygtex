@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{docker\PYGZus{}registry}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{\PYGZlt{}IP\PYGZhy{}CONTROLLER\PYGZgt{}:\PYGZlt{}port\PYGZgt{}}
+\PYG{n+nt}{docker\PYGZus{}registry\PYGZus{}insecure}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{yes}
+\end{Verbatim}

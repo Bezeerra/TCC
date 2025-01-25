@@ -1,0 +1,27 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{heat\PYGZus{}template\PYGZus{}version}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{2021\PYGZhy{}04\PYGZhy{}16}
+
+\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{Template para provisionamento de projetos individuais de pesquisa, incluindo rede e instância isolada.}
+
+\PYG{n+nt}{parameters}\PYG{p}{:}
+\PYG{+w}{  }\PYG{n+nt}{project\PYGZus{}name}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{string}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{Nome do projeto do aluno}
+\PYG{+w}{    }\PYG{n+nt}{default}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}projeto\PYGZhy{}pesquisa\PYGZdq{}}
+\PYG{+w}{  }\PYG{n+nt}{image\PYGZus{}id}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{string}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{ID da imagem com ambiente pré\PYGZhy{}configurado}
+\PYG{+w}{  }\PYG{n+nt}{flavor}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{string}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{Tipo de instância (flavor)}
+\PYG{+w}{    }\PYG{n+nt}{default}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{m1.small}
+\PYG{+w}{  }\PYG{n+nt}{network\PYGZus{}cidr}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{string}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{CIDR para a rede privada do projeto}
+\PYG{+w}{    }\PYG{n+nt}{default}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}192.168.100.0/24\PYGZdq{}}
+\PYG{+w}{  }\PYG{n+nt}{gateway\PYGZus{}ip}\PYG{p}{:}
+\PYG{+w}{    }\PYG{n+nt}{type}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{string}
+\PYG{+w}{    }\PYG{n+nt}{description}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{Gateway IP para a rede privada}
+\PYG{+w}{    }\PYG{n+nt}{default}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}192.168.100.1\PYGZdq{}}
+
+\end{Verbatim}

@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{[ovs]}
+\PYG{n+na}{bridge\PYGZus{}mappings}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{physnet1:br\PYGZhy{}ex}
+\PYG{n+na}{local\PYGZus{}ip}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZlt{}controller\PYGZhy{}ip\PYGZgt{}}
+\end{Verbatim}

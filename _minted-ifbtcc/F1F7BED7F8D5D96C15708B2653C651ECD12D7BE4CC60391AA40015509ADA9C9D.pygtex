@@ -1,0 +1,27 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Baixando o SO simplificado stable.}
+debootstrap\PYG{+w}{ }stable\PYG{+w}{ }path\PYGZus{}debian\PYG{+w}{ }http://deb.debian.org/debian/
+
+\PYG{c+c1}{\PYGZsh{} Acessando o bash e isolando os namespaces}
+unshare\PYG{+w}{ }\PYGZhy{}\PYGZhy{}mount\PYG{+w}{ }\PYGZhy{}\PYGZhy{}pid\PYG{+w}{ }\PYGZhy{}\PYGZhy{}net\PYG{+w}{ }\PYGZhy{}\PYGZhy{}user\PYG{+w}{ }\PYGZhy{}\PYGZhy{}map\PYGZhy{}root\PYGZhy{}user\PYG{+w}{ }\PYGZhy{}\PYGZhy{}fork\PYG{+w}{ }\PYGZhy{}\PYGZhy{}uts\PYG{+w}{ }\PYGZhy{}\PYGZhy{}ipc\PYG{+w}{ }chroot\PYG{+w}{ }path\PYGZus{}debian\PYG{+w}{ }/bin/bash
+
+\PYG{c+c1}{\PYGZsh{} Dentro do debian faca os pontos de montagem do debian}
+mount\PYG{+w}{ }\PYGZhy{}t\PYG{+w}{ }proc\PYG{+w}{ }proc\PYG{+w}{ }/proc
+mount\PYG{+w}{ }\PYGZhy{}t\PYG{+w}{ }sysfs\PYG{+w}{ }sys\PYG{+w}{ }/sys
+mount\PYG{+w}{ }\PYGZhy{}t\PYG{+w}{ }tmpfs\PYG{+w}{ }tmp\PYG{+w}{ }/tmp
+
+
+\PYG{c+c1}{\PYGZsh{} Crie os arquivos de configuraćão do group}
+\PYG{c+c1}{\PYGZsh{} limitando a 50\PYGZpc{} do uso da CPU}
+\PYG{n+nb}{echo}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}50000 100000\PYGZdq{}}\PYG{+w}{ }\PYG{p}{|}\PYG{+w}{ }sudo\PYG{+w}{ }tee\PYG{+w}{ }/sys/fs/cgroup/my\PYGZus{}cgroup/cpu.max
+
+\PYG{c+c1}{\PYGZsh{} limitando a 100MB de memória}
+\PYG{n+nb}{echo}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}100M\PYGZdq{}}\PYG{+w}{ }\PYG{p}{|}\PYG{+w}{ }sudo\PYG{+w}{ }tee\PYG{+w}{ }/sys/fs/cgroup/my\PYGZus{}cgroup/memory.max
+
+\PYG{c+c1}{\PYGZsh{} movendo o PID no processo /bin/bash para dentro do cgroup}
+\PYG{n+nb}{echo}\PYG{+w}{ }\PYGZlt{}PID\PYGZgt{}\PYG{+w}{ }\PYG{p}{|}\PYG{+w}{ }sudo\PYG{+w}{ }tee\PYG{+w}{ }/sys/fs/cgroup/my\PYGZus{}cgroup/cgroup.procs
+
+\PYG{c+c1}{\PYGZsh{} Para visualizar se está realmente sendo limitado você pode olhar os arquivos .stat e .events}
+cat\PYG{+w}{ }/sys/fs/cgroup/my\PYGZus{}cgroup/memory.events
+cat\PYG{+w}{ }/sys/fs/cgroup/my\PYGZus{}cgroup/cpu.stat
+\end{Verbatim}

@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n+nt}{\PYGZdq{}insecure\PYGZhy{}registries\PYGZdq{}}\PYG{p}{:}\PYG{+w}{ }\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}http://\PYGZlt{}IP\PYGZhy{}CONTROLLER\PYGZgt{}:\PYGZlt{}port\PYGZgt{}\PYGZdq{}}\PYG{p}{]}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

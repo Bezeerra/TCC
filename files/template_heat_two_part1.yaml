@@ -1,0 +1,25 @@
+heat_template_version: 2021-04-16
+
+description: Template para provisionamento de projetos individuais de pesquisa, incluindo rede e instância isolada.
+
+parameters:
+  project_name:
+    type: string
+    description: Nome do projeto do aluno
+    default: "projeto-pesquisa"
+  image_id:
+    type: string
+    description: ID da imagem com ambiente pré-configurado
+  flavor:
+    type: string
+    description: Tipo de instância (flavor)
+    default: m1.small
+  network_cidr:
+    type: string
+    description: CIDR para a rede privada do projeto
+    default: "192.168.100.0/24"
+  gateway_ip:
+    type: string
+    description: Gateway IP para a rede privada
+    default: "192.168.100.1"
+

@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}AUTH\PYGZus{}URL}\PYG{o}{=}http://\PYGZlt{}VIP\PYGZus{}IP\PYGZgt{}:5000/v3
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}PROJECT\PYGZus{}NAME}\PYG{o}{=}admin
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}USERNAME}\PYG{o}{=}admin
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}PASSWORD}\PYG{o}{=}\PYGZlt{}GENERATED\PYGZus{}PASSWORD\PYGZgt{}
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}PROJECT\PYGZus{}DOMAIN\PYGZus{}NAME}\PYG{o}{=}Default
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}USER\PYGZus{}DOMAIN\PYGZus{}NAME}\PYG{o}{=}Default
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}REGION\PYGZus{}NAME}\PYG{o}{=}RegionOne
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}INTERFACE}\PYG{o}{=}public
+\PYG{n+nb}{export}\PYG{+w}{ }\PYG{n+nv}{OS\PYGZus{}IDENTITY\PYGZus{}API\PYGZus{}VERSION}\PYG{o}{=}\PYG{l+m}{3}
+\end{Verbatim}
