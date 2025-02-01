@@ -1,6 +1,6 @@
 \chapter{Revisão da Literatura}
 
-Com o objetivo de realizar um levantamento de dados sobre o contexto do desenvolvimento de uma nuvem privada, foi aplicado o método de Mapeamento Sistemático, conforme as diretrizes propostas por (\cite{kitchenham2010systematic}).
+Com o objetivo de realizar um levantamento de dados sobre o contexto do desenvolvimento de uma nuvem privada, foi aplicado o método de mapeamento sistemático, conforme as diretrizes propostas por \cite{kitchenham2010systematic}.
 
 \section{Mapeamento Sistemático}
 
@@ -36,9 +36,9 @@ Os seguintes critérios de exclusão foram estabelecidos para a seleção dos ar
 
 \section{Análise dos Artigos Selecionados}
 
-(\cite{vogel2016private}) apresenta uma comparação abrangente dos serviços disponíveis nas principais soluções de Infraestrutura como Serviço (IaaS) e Plataforma como Serviço (PaaS) atualmente utilizadas: OpenNebula, CloudStack e OpenStack. Adicionalmente, incluímos o OpenShift na comparação, conforme documentado em (\cite{OpenShiftDocumentation}). A Tabela \ref{tab:comparacao_ferramentas_nuvem} detalha as funcionalidades e recursos oferecidos por cada plataforma em diferentes camadas, como abstração de recursos, serviço principal, suporte, gerenciamento, segurança, controle e serviços de valor agregado.
+\cite{vogel2016private} apresentam uma comparação abrangente dos serviços disponíveis nas principais soluções de Infraestrutura como Serviço \textit{(IaaS)} e Plataforma como Serviço \textit{(PaaS)} atualmente utilizadas: OpenNebula, CloudStack e OpenStack. Adicionalmente, incluímos o OpenShift na comparação, conforme documentado em \cite{OpenShiftDocumentation}. A Tabela \ref{tab:comparacao_ferramentas_nuvem} detalha as funcionalidades e recursos oferecidos por cada plataforma em diferentes camadas, como abstração de recursos, serviço principal, suporte, gerenciamento, segurança, controle e serviços de valor agregado.
 
-Essa comparação tem como objetivo auxiliar na compreensão das diferenças e semelhanças entre essas soluções, permitindo uma avaliação mais informada na seleção da plataforma que melhor atenda às necessidades específicas de implementação, escalabilidade, segurança e gerenciamento em ambientes de nuvem.
+Essa comparação tem como objetivo auxiliar na compreensão das diferenças e semelhanças entre essa.s soluções, permitindo uma avaliação mais informada na seleção da plataforma que melhor atenda às necessidades específicas de implementação, escalabilidade, segurança e gerenciamento em ambientes de nuvem.
 
 \small % Reduz o tamanho da fonte para a tabela
 
@@ -161,17 +161,17 @@ Suporte a Aplicações & Não disponível & Não disponível & Não disponível 
 
 Após a análise da tabela \ref{tab:comparacao_ferramentas_nuvem}, percebemos que, de forma geral, o OpenStack apresenta serviços mais modularizados e com maior potencial de integração. Isso o torna uma solução mais configurável e escalável, o que é especialmente vantajoso, considerando que os serviços necessários em um campus voltado à pesquisa podem variar significativamente. 
 
-\cite{wen2012comparison} apresenta uma comparação detalhada entre as plataformas de gerencimento de nuvem OpenStack e OpenNebula. Elas são comparadas sob diversos aspectos, incluindo origem, arquitetura, hipervisor entre outros detalhes. E se destaca o OpenStack em relação a escalabilidade do serviço e os componentes existentes dentro dele, mas finaliza explicando que vai depender de como você vai utilizar esse serviço cloud para efetuar a escolha certa.
+\cite{wen2012comparison} apresentam uma comparação detalhada entre as plataformas de gerencimento de nuvem OpenStack e OpenNebula. Elas são comparadas sob diversos aspectos, incluindo origem, arquitetura, hipervisor entre outros detalhes. E se destaca o OpenStack em relação a escalabilidade do serviço e os componentes existentes dentro dele, mas finaliza explicando que vai depender de como você vai utilizar esse serviço cloud para efetuar a escolha certa.
 
-\cite{shahzadi2017infrastructure} apresenta uma análise comparativa do desempenho de diferentes plataformas de nuvem de código aberto focadas na infraestrutura como serviço (IaaS). O estudo examina aspectos como arquitetura, modelos de nuvem suportados, compatibilidade com hipervisores e linguagens de programação. A comparação destaca o desempenho e a escalabilidade de cada plataforma, oferecendo recomendações para pesquisadores sobre a escolha adequada de ferramentas de validação em ambientes de teste. A análise conclui que o OpenStack demonstra desempenho superior em cenários de teste, especialmente ao comparar implantações com o \textit{Native OpenStack Approach}.
+\cite{shahzadi2017infrastructure} apresentam uma análise comparativa do desempenho de diferentes plataformas de nuvem de código aberto focadas na infraestrutura como serviço (IaaS). O estudo examina aspectos como arquitetura, modelos de nuvem suportados, compatibilidade com hipervisores e linguagens de programação. A comparação destaca o desempenho e a escalabilidade de cada plataforma, oferecendo recomendações para pesquisadores sobre a escolha adequada de ferramentas de validação em ambientes de teste. A análise conclui que o OpenStack demonstra desempenho superior em cenários de teste, especialmente ao comparar implantações com o \textit{Native OpenStack Approach}.
 
-\cite{kumar2014open} apresenta uma comparação abrangente entre as principais plataformas de nuvem de código aberto, incluindo OpenStack, Eucalyptus, CloudStack e OpenNebula. O estudo aborda aspectos como origem, arquitetura, compatibilidade com hipervisores, suporte a APIs e capacidade de migração de VMs. A análise destaca o OpenStack como uma solução robusta e escalável, com suporte comunitário amplo e uma arquitetura modular que facilita a integração de diversos serviços. No entanto, conclui que a escolha ideal entre as plataformas depende dos requisitos específicos do ambiente, como suporte a APIs da AWS, integração com sistemas existentes e casos de uso para nuvens públicas, privadas ou híbridas.
+\cite{kumar2014open} apresentam uma comparação abrangente entre as principais plataformas de nuvem de código aberto, incluindo OpenStack, Eucalyptus, CloudStack e OpenNebula. O estudo aborda aspectos como origem, arquitetura, compatibilidade com hipervisores, suporte a APIs e capacidade de migração de VMs. A análise destaca o OpenStack como uma solução robusta e escalável, com suporte comunitário amplo e uma arquitetura modular que facilita a integração de diversos serviços. No entanto, conclui que a escolha ideal entre as plataformas depende dos requisitos específicos do ambiente, como suporte a APIs da AWS, integração com sistemas existentes e casos de uso para nuvens públicas, privadas ou híbridas.
 
 
 
 \section{Outras Motivações para a Escolha do OpenStack}
 
-Ao considerar uma arquitetura de nuvem privada completa, o OpenShift é comumente utilizado em conjunto com outros serviços de nuvem devido ao seu foco no provisionamento e na orquestração de contêineres. Frequentemente, ele complementa as funcionalidades das soluções de nuvem privada (\cite{IBMWithOpenShift}).
+Ao considerar uma arquitetura de nuvem privada completa, o OpenShift é comumente utilizado em conjunto com outros serviços de nuvem devido ao seu foco no provisionamento e na orquestração de contêineres. Frequentemente, ele complementa as funcionalidades das soluções de nuvem privada~\citep{IBMWithOpenShift}.
 
 Como todos esses projetos são de código aberto (\textit{open-source}), é importante analisar a atividade das comunidades que os mantêm. Dentre eles, o OpenStack se destaca por possuir uma comunidade extremamente ativa e numerosa.
 
@@ -189,18 +189,18 @@ Como todos esses projetos são de código aberto (\textit{open-source}), é impo
     \end{tabular}
 \end{table}
 
-Ao comparar a comunidade do OpenStack com a do OpenNebula, percebe-se que, apesar de o OpenNebula ter sido lançado antes, em 2011, a comunidade do OpenStack já era maior e contava com grandes empresas contribuindo para seu desenvolvimento (\cite{wen2012comparison}).
+Ao comparar a comunidade do OpenStack com a do OpenNebula, percebe-se que, apesar de o OpenNebula ter sido lançado antes, em 2011, a comunidade do OpenStack já era maior e contava com grandes empresas contribuindo para seu desenvolvimento~\citep{wen2012comparison}.
 
 \subsection{Utilização em Instituições de Ensino}
 
 Ao pesquisar a infraestrutura de grandes instituições de ensino, observa-se que muitas delas utilizam tecnologias de nuvem privada. Abaixo estão alguns exemplos:
 
 \begin{itemize}
-    \item \textbf{Harvard}: Utiliza serviços específicos do OpenStack para a criação de um \textit{Cloud Dataverse} (\cite{CloudDataverseSwiftHarvard}).
-    \item \textbf{Universidade da Califórnia}: Possui uma nuvem privada com OpenStack que utiliza entre 5.000 núcleos de CPU e 50 TB de armazenamento (\cite{UniversitiesUsingOpenStackOpenMetal}).
-    \item \textbf{Cambridge}: Mantém uma nuvem privada com OpenStack com até 2.000 núcleos de CPU e 20 TB de armazenamento (\cite{UniversitiesUsingOpenStackOpenMetal}).
-    \item \textbf{UCLouvain}: Utiliza o OpenNebula para fornecer serviços em nuvem para seus alunos (\cite{UCLouvainOpenNebula}).
-    \item \textbf{USP}: Adota o Apache CloudStack para prover serviços em nuvem aos seus alunos (\cite{USPCloudStack}).
+    \item \textbf{Harvard}: Utiliza serviços específicos do OpenStack para a criação de um \textit{Cloud Dataverse}~\citep{CloudDataverseSwiftHarvard}.
+    \item \textbf{Universidade da Califórnia}: Possui uma nuvem privada com OpenStack que utiliza entre 5.000 núcleos de CPU e 50 TB de armazenamento~\citep{UniversitiesUsingOpenStackOpenMetal}.
+    \item \textbf{Cambridge}: Mantém uma nuvem privada com OpenStack com até 2.000 núcleos de CPU e 20 TB de armazenamento~\citep{UniversitiesUsingOpenStackOpenMetal}.
+    \item \textbf{UCLouvain}: Utiliza o OpenNebula para fornecer serviços em nuvem para seus alunos~\citep{UCLouvainOpenNebula}.
+    \item \textbf{USP}: Adota o Apache CloudStack para prover serviços em nuvem aos seus alunos~\citep{USPCloudStack}.
 \end{itemize}
 
-Outro ponto que levou à escolha do OpenStack é sua superioridade em resiliência e escalabilidade quando comparado aos concorrentes (\cite{vogel2016private}). Além disso, o OpenStack apresenta uma fragmentação mais eficiente dos componentes. Cada serviço listado na Tabela \ref{tab:comparacao_ferramentas_nuvem} possui um componente específico dentro do OpenStack, dedicado a garantir seu funcionamento adequado (\cite{vogel2016private}).
+Outro ponto que levou à escolha do OpenStack é sua superioridade em resiliência e escalabilidade quando comparado aos concorrentes~\citep{vogel2016private}. Além disso, o OpenStack apresenta uma fragmentação mais eficiente dos componentes. Cada serviço listado na Tabela \ref{tab:comparacao_ferramentas_nuvem} possui um componente específico dentro do OpenStack, dedicado a garantir seu funcionamento adequado~\citep{vogel2016private}.

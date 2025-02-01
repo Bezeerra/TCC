@@ -1,6 +1,9 @@
+This work presents a project for the implementation of a private cloud at the Federal Institute of Brasília (IFB) using the open-source platform OpenStack. The focus is on deploying a modular cluster through Kolla-Ansible, which containerizes OpenStack services. The architecture organizes nodes into dedicated roles for Compute, Storage, and Controller, ensuring efficient resource allocation. Although hardware limitations prevented a full implementation, a test environment successfully demonstrated the integration of services and the potential for cluster scalability with additional resources at the Taguatinga campus.
 
+The project utilizes three nodes: a main node that runs all services and manages network control, and two specialized nodes for specific service groups. This design simplifies the addition of new nodes to the cluster, ensuring data isolation and control. Furthermore, the integration of Hierarchical Multitenancy in OpenStack provides advanced logical isolation between projects for potential future research, and HEAT templates for Infrastructure as Code (IaC) automation promote greater organization and resource management.
+
+The study highlights the feasibility of implementing a private cloud at IFB in the near future, which would improve infrastructure control and provide valuable resources for student research. This solution not only meets potential institutional needs but also establishes a scalable foundation for future growth, aligning with the demands of educational environments.
 
 \begin{keywords}
-Software Engineering, Software Maintenance and Evolution, Change Request
-Management, Automatic Change Request Assignment
+Cloud Computing, Node Architecture, OpenStack, Private Cloud, Virtualization, Kolla-Ansible
 \end{keywords}

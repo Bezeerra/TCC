@@ -1,0 +1,25 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{p}{\PYGZlt{}}\PYG{n+nt}{domain} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}kvm\PYGZsq{}}\PYG{p}{\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}}\PYG{n+nt}{name}\PYG{p}{\PYGZgt{}}example\PYG{p}{\PYGZlt{}/}\PYG{n+nt}{name}\PYG{p}{\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}}\PYG{n+nt}{memory} \PYG{n+na}{unit}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}KiB\PYGZsq{}}\PYG{p}{\PYGZgt{}}1048576\PYG{p}{\PYGZlt{}/}\PYG{n+nt}{memory}\PYG{p}{\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}}\PYG{n+nt}{vcpu} \PYG{n+na}{placement}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}static\PYGZsq{}}\PYG{p}{\PYGZgt{}}1\PYG{p}{\PYGZlt{}/}\PYG{n+nt}{vcpu}\PYG{p}{\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}}\PYG{n+nt}{os}\PYG{p}{\PYGZgt{}}
+    \PYG{p}{\PYGZlt{}}\PYG{n+nt}{type} \PYG{n+na}{arch}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}x86\PYGZus{}64\PYGZsq{}} \PYG{n+na}{machine}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}pc\PYGZhy{}i440fx\PYGZhy{}2.9\PYGZsq{}}\PYG{p}{\PYGZgt{}}hvm\PYG{p}{\PYGZlt{}/}\PYG{n+nt}{type}\PYG{p}{\PYGZgt{}}
+    \PYG{p}{\PYGZlt{}}\PYG{n+nt}{boot} \PYG{n+na}{dev}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}hd\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}/}\PYG{n+nt}{os}\PYG{p}{\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}}\PYG{n+nt}{devices}\PYG{p}{\PYGZgt{}}
+    \PYG{p}{\PYGZlt{}}\PYG{n+nt}{disk} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}file\PYGZsq{}} \PYG{n+na}{device}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}disk\PYGZsq{}}\PYG{p}{\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{driver} \PYG{n+na}{name}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}qemu\PYGZsq{}} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}qcow2\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{source} \PYG{n+na}{file}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}/var/lib/libvirt/images/example.qcow2\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{target} \PYG{n+na}{dev}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}vda\PYGZsq{}} \PYG{n+na}{bus}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}virtio\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{address} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}pci\PYGZsq{}} \PYG{n+na}{domain}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x0000\PYGZsq{}} \PYG{n+na}{bus}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x00\PYGZsq{}} \PYG{n+na}{slot}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x04\PYGZsq{}} \PYG{n+na}{function}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x0\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+    \PYG{p}{\PYGZlt{}/}\PYG{n+nt}{disk}\PYG{p}{\PYGZgt{}}
+    \PYG{p}{\PYGZlt{}}\PYG{n+nt}{interface} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}network\PYGZsq{}}\PYG{p}{\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{mac} \PYG{n+na}{address}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}52:54:00:6b:3c:58\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{source} \PYG{n+na}{network}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}default\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{model} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}virtio\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+      \PYG{p}{\PYGZlt{}}\PYG{n+nt}{address} \PYG{n+na}{type}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}pci\PYGZsq{}} \PYG{n+na}{domain}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x0000\PYGZsq{}} \PYG{n+na}{bus}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x00\PYGZsq{}} \PYG{n+na}{slot}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x03\PYGZsq{}} \PYG{n+na}{function}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}0x0\PYGZsq{}}\PYG{p}{/\PYGZgt{}}
+    \PYG{p}{\PYGZlt{}/}\PYG{n+nt}{interface}\PYG{p}{\PYGZgt{}}
+  \PYG{p}{\PYGZlt{}/}\PYG{n+nt}{devices}\PYG{p}{\PYGZgt{}}
+\PYG{p}{\PYGZlt{}/}\PYG{n+nt}{domain}\PYG{p}{\PYGZgt{}}
+\end{Verbatim}

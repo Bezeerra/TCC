@@ -1,23 +1,23 @@
 \chapter{Projeto de Implementação do OpenStack no IFB}
 \label{ref:implementation_project_openstack_ifb}
 
-Todos os detalhes apresentados neste desenvolvimento foram baseados na documentação oficial do OpenStack (\cite{DocumentacaoOpenstack}). Algumas configurações específicas relacionadas às \textit{VMs} foram obtidas em discussões sobre problemas registrados no \url{https://bugs.launchpad.net/openstack/}.
+Todos os detalhes apresentados neste desenvolvimento foram baseados na documentação oficial do OpenStack~\citep{DocumentacaoOpenstack}. Algumas configurações específicas relacionadas às VMs foram obtidas em discussões sobre problemas registrados no \textit{\href{https://bugs.launchpad.net/openstack/}{lauchpad bugs (OpenStack)}}.
 
-A finalidade deste capítulo é detalhar o processo de implementação do OpenStack no campus do Instituto Federal de Brasília (IFB), apresentando a arquitetura proposta, as configurações realizadas nos diferentes nós (Controller, Storage e Compute), e os ajustes necessários para atender às demandas específicas da instituição. Além disso, são abordadas estratégias de automação, criação de projetos para diferentes perfis de usuários e as considerações para futuras atualizações e migrações, garantindo a escalabilidade e a eficiência do ambiente implementado.
+A finalidade deste capítulo é detalhar o processo de implementação do OpenStack no campus do Instituto Federal de Brasília, apresentando a arquitetura proposta, as configurações realizadas nos diferentes nós (Controller, Storage e Compute), e os ajustes necessários para atender às demandas específicas da instituição. Além disso, são abordadas estratégias de automação, criação de projetos para diferentes perfis de usuários e as considerações para futuras atualizações e migrações, garantindo a escalabilidade e a eficiência do ambiente implementado.
 
 
 \section{Kolla}
-Para construir nosso \textit{cluster} OpenStack, é necessário definir como o serviço será colocado em produção e como as máquinas serão distribuídas dentro do \textit{cluster}. Optamos pelo uso do \textit{Kolla-Ansible} (\url{https://docs.openstack.org/kolla-ansible/latest/}) devido à sua organização, facilidade de configuração e capacidade de automação.
+Para construir nosso \textit{cluster} OpenStack, é necessário definir como o serviço será colocado em produção e como as máquinas serão distribuídas dentro do \textit{cluster}. Optamos pelo uso do \textit{\href{https://docs.openstack.org/kolla-ansible/latest/}{Kolla-Ansible}} devido à sua organização, facilidade de configuração e capacidade de automação.
 
 O Kolla utiliza contêineres Docker para executar os serviços de forma isolada, proporcionando maior controle sobre cada componente. Essa abordagem permite escalar serviços, alterar imagens, adicionar configurações específicas e realizar modificações sem impactar os demais serviços do \textit{cluster}. A utilização de contêineres também facilita a manutenção e atualizações, uma vez que cada serviço opera de maneira independente.
 
-Além disso, o \textit{Kolla-Ansible} permite definir em qual nó cada serviço será executado, organizando grupos de controle que atribuem os contêineres aos nós correspondentes. Por padrão, o Nó principal (\textbf{Controller}) executa todos os serviços essenciais, enquanto os demais Nós recebem serviços específicos de acordo com suas funções, como \textit{Compute} ou \textit{Storage}. No entanto, também é possível configurar qualquer Nó para executar todos os serviços, dependendo da necessidade.
+Além disso, o Kolla-Ansible permite definir em qual nó cada serviço será executado, organizando grupos de controle que atribuem os contêineres aos nós correspondentes. Por padrão, o Nó principal (\textbf{Controller}) executa todos os serviços essenciais, enquanto os demais Nós recebem serviços específicos de acordo com suas funções, como \textit{Compute} ou \textit{Storage}. No entanto, também é possível configurar qualquer Nó para executar todos os serviços, dependendo da necessidade.
 
 O OpenStack utiliza o \textbf{HAProxy} para realizar o balanceamento de carga entre os diferentes Nós, garantindo melhor distribuição do tráfego e alta disponibilidade. Isso elimina a necessidade de configurações adicionais de balanceamento, desde que os Nós estejam na mesma rede.
 
-O Kolla oferece diferentes versões para organizar e gerenciar as imagens Docker de forma eficiente. No nosso caso, optamos pelo lançamento mais estável disponível no momento desta pesquisa, ``ubuntu-noble''. Essa escolha foi feita porque versões mais recentes nem sempre possuem todas as imagens \textit{builded}, o que pode levar à ausência de imagens importantes, como o \textit{Cinder} executando a versão ``rocky''. Para configurar a \textit{release} desejada, basta alterar a variável \texttt{openstack\_tag} no arquivo \textbf{globals.yaml} e executar o \textit{deploy}.
+O Kolla oferece diferentes versões para organizar e gerenciar as imagens Docker de forma eficiente. No nosso caso, optamos pelo lançamento mais estável disponível no momento desta pesquisa, ``ubuntu-noble''. Essa escolha foi feita porque versões mais recentes nem sempre possuem todas as imagens \textit{builded}, o que pode levar à ausência de imagens importantes, como o \textit{Cinder} executando a versão ``rocky''. Para configurar a \textit{release} desejada, basta alterar a variável \texttt{openstack\_tag} no arquivo \texttt{globals.yaml} e executar o \textit{deploy}.
 
-No Linux, o Python é essencial para o funcionamento de serviços do sistema, e alterar pacotes ou versões globalmente pode causar problemas. Por isso, é recomendável usar ambientes virtuais para isolar dependências de projetos, evitando interferências no sistema ou em outros projetos. Ferramentas como o pyenv permitem instalar e gerenciar versões específicas do Python de forma segura, criando ambientes virtuais dedicados sem afetar a versão padrão do sistema. Essa abordagem protege o sistema operacional e mantém um ambiente de desenvolvimento consistente. Para a instalação do kolla vamos utilizar o `python venv` e dentro dele instalar os pacotes essenciais do kolla como recomendado em \url{https://docs.openstack.org/kolla-ansible/latest/user/quickstart.html}.
+No Linux, o Python é essencial para o funcionamento de serviços do sistema, e alterar pacotes ou versões globalmente pode causar problemas. Por isso, é recomendável usar ambientes virtuais para isolar dependências de projetos, evitando interferências no sistema ou em outros projetos. Ferramentas como o pyenv permitem instalar e gerenciar versões específicas do Python de forma segura, criando ambientes virtuais dedicados sem afetar a versão padrão do sistema. Essa abordagem protege o sistema operacional e mantém um ambiente de desenvolvimento consistente. Para a instalação do kolla vamos utilizar o `python venv` e dentro dele instalar os pacotes essenciais do kolla como recomendado em \textit{\href{https://docs.openstack.org/kolla-ansible/latest/user/quickstart.html}{Kolla Ansible documentation}}.
 
 Ao final do desenvolvimento, explicaremos como organizar nosso \textit{cluster} para facilitar futuras migrações e atualizações. Como os serviços estão isolados em contêineres, as atualizações tornam-se mais simples, permitindo a substituição individual de cada imagem sem impacto significativo nos demais serviços. Além disso, o Kolla garante uma retrocompatibilidade entre os contêineres, tornando a troca entre versões mais estável e segura.
 
@@ -26,14 +26,14 @@ Ao final do desenvolvimento, explicaremos como organizar nosso \textit{cluster} 
 
 O objetivo principal é aproveitar o hardware remanescente para construir uma nuvem privada, com a possibilidade de, no futuro, expandir essa infraestrutura para uma nuvem completa. Essa expansão permitiria distribuir todo o hardware disponível de forma eficiente, beneficiando diretamente os alunos do campus. Além disso, será demonstrado adiante como essa abordagem simplifica a distribuição de poder computacional e oferece maior visibilidade sobre a utilização dos recursos em cada projeto.
 
-Para a criação de um nó (Nó) simples do OpenStack, recomenda-se uma CPU com 24 núcleos, 24 GB ou mais de memória RAM e 4 discos de 500 GB (7200 RPM) (\cite{DocumentacaoOpenstack}), conforme ilustrado na Figura \ref{fig:hardware_requirements}. Como o cluster é composto por 3 nós, esses recursos precisariam ser triplicados para atender às demandas do ambiente.
+Para a criação de um nó (Nó) simples do OpenStack, recomenda-se uma CPU com 24 núcleos, 24 GB ou mais de memória RAM e 4 discos de 500 GB (7200 RPM)~\citep{DocumentacaoOpenstack}, conforme ilustrado na Figura \ref{fig:hardware_requirements}. Como o cluster é composto por 3 nós, esses recursos precisariam ser triplicados para atender às demandas do ambiente.
 
 Devido às limitações do hardware disponível, essa configuração não é viável. Portanto, será criado apenas para fins de demonstração e apresentaremos a arquitetura do cluster, como deveria ser feito em servidores em produção, a forma como vamos estrutura essa arquitetura deixa simples a adição e substituição de mais nós.
 
 \begin{figure}[htbp]
     \centering
     \caption{Requisitos de hardware recomendados para a criação de um Nó OpenStack. A figura apresenta as especificações mínimas de CPU, memória e armazenamento necessárias para um nó OpenStack simples, com recomendações para ambientes de produção.}
-    \includegraphics[width=0.7\textwidth]{images/hardware_requirements.png}
+    \includegraphics[width=0.9\textwidth]{images/hardware_requirements.png}
     \caption*{\textit{Fonte:} \url{https://docs.openstack.org/murano/rocky/admin/deploy_murano/prerequisites.html}.}
     \label{fig:hardware_requirements}
 \end{figure}
@@ -43,7 +43,7 @@ Devido às limitações do hardware disponível, essa configuração não é vi�
 
 Para implementar uma nuvem privada no campus do IFB, o \textit{cluster} OpenStack será composto por três nós: um nó principal (\textbf{Controller}), responsável pelos serviços essenciais, e dois nós adicionais dedicados, respectivamente, à criação de instâncias (\textit{Compute}) e ao armazenamento (\textit{Storage}). Essa divisão funcional segue o princípio de modularidade, conferindo escalabilidade e organização à arquitetura.
 
-O \textbf{Controller} gerencia os demais nós do \textit{cluster}, centralizando a criação e administração de recursos. As configurações principais do OpenStack são definidas no arquivo \texttt{globals.yaml}, localizado em `/etc/kolla/globals.yaml', que especifica os serviços executados, interfaces de rede e alocações de IP, incluindo o Neutron. Configurações adicionais, como a relação entre os nós, são feitas no arquivo \texttt{multinode}, encontrado em `venv/share/kolla-ansible/ansible/inventory/multinode`.
+O \textbf{Controller} gerencia os demais nós do \textit{cluster}, centralizando a criação e administração de recursos. As configurações principais do OpenStack são definidas no arquivo \texttt{globals.yaml}, localizado em \texttt{/etc/kolla/globals.yaml}, que especifica os serviços executados, interfaces de rede e alocações de IP, incluindo o Neutron. Configurações adicionais, como a relação entre os nós, são feitas no arquivo \texttt{multinode}, encontrado em \texttt{venv/share/kolla-ansible/ansible/inventory/multinode}.
 
 \begin{figure}[htbp]
     \centering
@@ -52,27 +52,25 @@ O \textbf{Controller} gerencia os demais nós do \textit{cluster}, centralizando
     \label{fig:cluster_architecture}
 \end{figure}
 
-Apesar de simples, essa arquitetura atende eficientemente às necessidades do campus, permitindo a criação de usuários, alocação de projetos e gerenciamento automatizado de recursos com agilidade. Além disso, o monitoramento detalhado possibilita tomadas de decisão informadas e a adição de recursos específicos para atender a demandas crescentes, garantindo flexibilidade e desempenho.
+Apesar de simples, essa arquitetura atende a todos os requisitos que comentamos sobre o campus, permitindo a criação de usuários, alocação de projetos e gerenciamento automatizado de recursos com agilidade. Além disso, o monitoramento detalhado possibilita tomadas de decisão informadas e a adição de recursos específicos para atender a demandas crescentes, garantindo flexibilidade e desempenho.
 
 \section{Controller}
 
-Devido às limitações do hardware, composto por servidores antigos com 16 GB de RAM e 120 GB de armazenamento total por nó, a configuração busca otimizar os recursos disponíveis. Essa capacidade, ainda que inferior ao ideal, é suficiente para executar o OpenStack em um ambiente de testes.
+Devido às limitações do hardware, composto por servidores antigos com 16 GB de RAM e 120 GB de armazenamento total por nó, a configuração busca otimizar os recursos disponíveis. Essa capacidade é muito inferior à recomendada, mas é suficiente para executar o OpenStack em um ambiente de testes.
 
 Uma limitação significativa é a ausência de discos dedicados exclusivamente a serviços de armazenamento como o \textbf{Swift} e o \textbf{Cinder}, que requerem volumes lógicos preferencialmente alocados em discos separados. No entanto, nesta configuração, todos os serviços operam em conjunto no mesmo ambiente.
 
 \subsection{Ambiente de Teste com VMs}
-Também foram realizados testes em \textit{VMs} para compreender a arquitetura, sua conectividade e o gerenciamento. Esses testes se mostraram eficientes facilitando o controle e os ajustes necessários, proporcionando um ambiente flexível para experimentação. A seguir, é apresentada uma explicação simplificada sobre como essa arquitetura de teste foi configurada.
+Também foram realizados testes em VMs para compreender a arquitetura, sua conectividade e o gerenciamento. Esses testes se mostraram eficientes facilitando o controle e os ajustes necessários, proporcionando um ambiente flexível para experimentação. A seguir, é apresentada uma explicação simplificada sobre como essa arquitetura de teste foi configurada.
 
-Para garantir estabilidade, as \textit{VMs} foram configuradas com 14 GB de RAM, adequadas para suportar serviços críticos, como o sistema de filas. O nó \textbf{Controller} utiliza 4 vCPUs, enquanto os nós de \textit{compute} e \textit{storage} operam com 3 vCPUs cada. Apesar de ocasionais momentos de lentidão, essa configuração atende à demonstração proposta.
+Para garantir estabilidade, as VMs foram configuradas com 18 GB de RAM, adequadas para suportar serviços críticos, como o sistema de filas. O nó \textbf{Controller} utiliza 4 vCPUs, enquanto os nós de \textit{compute} e \textit{storage} operam com 3 vCPUs cada. Apesar de ocasionais momentos de lentidão, essa configuração atende à demonstração proposta.
 
-O \textbf{Controller} foi equipado com 120 GB de armazenamento para maior estabilidade, enquanto os demais nós utilizam 60 GB, suficientes para o propósito do teste. Em ambientes de produção, o nó de \textit{storage} demandaria maior capacidade para gerenciar grandes volumes de dados, e o nó de \textit{compute} necessitaria de mais memória RAM e processadores mais robustos para múltiplas instâncias simultâneas.
+O \textbf{Controller} foi equipado com 120 GB de armazenamento para maior estabilidade, enquanto os demais nós utilizam 60 GB, suficientes para o propósito do teste. Em ambientes de produção, o nó de \textit{storage} demandaria uma maior capacidade de armazenamento para gerenciar grandes volumes de dados, e o nó de \textit{compute} necessitaria de mais memória RAM e processadores mais robustos para múltiplas instâncias simultâneas, a quantidade extada vai depender diretamente da quantidade de infraestrutura que será provida pelo campus.
 
 Adicionalmente, dois discos extras foram alocados ao \textbf{Controller} para gerenciar \textit{storage}: um dedicado ao \textbf{Swift (Object Storage)} e outro ao \textbf{Cinder (Block Storage)}. A configuração desses discos é realizada no \texttt{globals.yaml}, sendo necessário criar os volumes lógicos previamente.
 
 Embora o \textbf{Controller} gerencie serviços de armazenamento, um nó dedicado ao \textit{storage} pode ser adicionado ao \textit{cluster} para balancear a carga. O OpenStack distribui os dados automaticamente entre os nós disponíveis, permitindo escalabilidade conforme necessário, com adição eficiente de novos nós para atender ao crescimento das demandas.
 
-
-% \analis
 
 
 \subsection{Configurações do Host OpenStack}
@@ -81,13 +79,13 @@ Como mencionado anteriormente, é fundamental compreender o papel dos volumes l�
 
 O nó \textbf{Controller} exige pelo menos duas interfaces de rede: uma para conexão interna e outra para conexão externa. No entanto, como não há uma conexão externa disponível para provisionar IPs públicos, utilizaremos as duas interfaces de forma diferente. Uma delas será dedicada ao Neutron, mas sem suporte para alocar IPs públicos diretamente às instâncias. Ainda assim, será possível utilizar o gateway padrão do \textit{switch} tendo acesso a internet e sendo possível que todos os usuários da rede interna acessem e utilizem as instâncias normalmente.
 
-No caso da implementação em \textit{VMs}, utilizaremos também duas interfaces porem configuradas para executar em modo \texttt{bridge}:
+No caso da implementação em VMs, utilizaremos também duas interfaces porem configuradas para executar em modo \texttt{bridge}:
 \begin{itemize}
     \item A primeira interface será configurada em modo \textit{bridge} com o host para permitir a comunicação interna.
     \item A segunda interface também será em modo \textit{bridge}, dedicada ao serviço \textbf{Neutron}, responsável por prover \textit{Network as a Service} (NaaS).
 \end{itemize}
 
-Os endereços IP estáticos para essas interfaces devem ser definidos no \texttt{netplan}. Configurar IPs fixos para os nós é essencial, pois no arquivo \texttt{multinode} é necessário especificar o IP ou o DNS do nó que será utilizado nos grupos de controle. Além disso, é necessário reservar um endereço IP exclusivo na rede para o \textbf{Kolla Internal VIP Address}, utilizado na comunicação interna entre os serviços do OpenStack. A configuração deve ser como a mostrada em (Código \ref{code:globals_vip_address})
+Os endereços IP estáticos para essas interfaces devem ser definidos no \texttt{netplan}. Configurar IPs fixos para os nós é essencial, pois no arquivo \texttt{multinode} é necessário especificar o IP ou o DNS do nó que será utilizado nos grupos de controle. Além disso, é necessário reservar um endereço IP exclusivo na rede para o \textbf{\textit{Kolla Internal VIP Address}}, utilizado na comunicação interna entre os serviços do OpenStack. A configuração deve ser como a mostrada em Código \ref{code:globals_vip_address}.
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -114,9 +112,9 @@ Antes de iniciar a configuração, os seguintes pré-requisitos devem ser atendi
     \item Configurar o \textit{gateway} padrão e validar as regras do \textit{firewall}, garantindo que o tráfego necessário esteja permitido.
 \end{itemize}
 
-No caso de testes realizados em máquinas virtuais (VMs), é necessário configurar uma interface de rede no modo \textit{bridge}. Essa interface deve ser a mesma especificada no arquivo de configuração \texttt{globals.yaml} para o Neutron. Essa configuração garante que o tráfego da interface \texttt{br-ex} seja corretamente encaminhado para a rede externa, permitindo o acesso à internet pelas instâncias. 
+No caso de testes realizados em máquinas virtuais, é necessário configurar uma interface de rede no modo \textit{bridge}. Essa interface deve ser a mesma especificada no arquivo de configuração \texttt{globals.yaml} para o Neutron. Essa configuração garante que o tráfego da interface \texttt{br-ex} seja corretamente encaminhado para a rede externa, permitindo o acesso à internet pelas instâncias. 
 
-Além disso, independentemente da forma de \textit{deployment}, se você estiver utilizando o \textbf{OVS} para controle de rede, que é o padrão do OpenStack, é crucial verificar se os parâmetros \texttt{local\_ip} e \texttt{bridge\_mappings} estão configurados corretamente no arquivo \texttt{openvswitch\_agent.ini}, como em (Código \ref{code:config_openvswitch}).
+Além disso, independentemente da forma de \textit{deployment}, se você estiver utilizando o \textbf{OVS} para controle de rede, que é o padrão do OpenStack, é crucial verificar se os parâmetros \texttt{local\_ip} e \texttt{bridge\_mappings} estão configurados corretamente no arquivo \texttt{openvswitch\_agent.ini}, como em Código \ref{code:config_openvswitch}.
 
 
 \begin{listing}[h!]
@@ -143,7 +141,7 @@ Dentro do Openstack a configuração do \textbf{Docker Compose} feito pelo kolla
 Essa política também é seguida pelas configurações de saúde do cluster chamado de \textit{healthcheck} garantindo que os containers sejam automaticamente recriados se forem removidos ou pararem, nesse caso até se o nó sofrer algum tipo de \textit{reboot} ele vai voltar criando os containers. Essas configurações podem ser vistas dentro de `/etc/kolla/docker-compose`. Obviamente para isso funcionar o serviço do docker precisa está executando se for parado forçadamente os containers também serão destruídos.
 
 \subsection{Docker Register}
-Antes de irmos para a criação do próximo nó é necessário criar um serviço de registro no \textit{controller}, ele basicamente vai ser responsável por fornecer as imagens dos serviços para os outros nós, dessa forma garantimos a consistência das imagens em todo o cluster \url{https://docs.openstack.org/kolla-ansible/latest/user/multinode.html}. Pode ser criado mais de um registro dentro do cluster, assim como pode ter vários \textit{controllers}. No nosso caso apenas um já resolve o problema. No \texttt{globals.yaml} devemos adicionar as variáveis como mostrado em (Código \ref{code:docker_registry_globals}).
+Antes de irmos para a criação do próximo nó é necessário criar um serviço de registro no \textit{controller}, ele basicamente vai ser responsável por fornecer as imagens dos serviços para os outros nós, dessa forma garantimos a consistência das imagens em todo o cluster \url{https://docs.openstack.org/kolla-ansible/latest/user/multinode.html}. Pode ser criado mais de um registro dentro do cluster, assim como pode ter vários \textit{controllers}. No nosso caso apenas um já resolve o problema. No \texttt{globals.yaml} devemos adicionar as variáveis como mostrado em Código \ref{code:docker_registry_globals}.
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -156,7 +154,7 @@ Antes de irmos para a criação do próximo nó é necessário criar um serviço
 \end{listing}
 
 
-Após subir o Docker Registry e enviar as imagens para ele, é necessário alterar o arquivo \texttt{/etc/docker/daemon.json} no Docker para direcionar o \textit{pull} das imagens primeiramente ao serviço de registro configurado no \textbf{Controller}. Isso garante que, ao adicionar novos nós ao cluster, eles busquem as imagens diretamente do registro interno, assegurando a consistência das imagens. Além disso, essa configuração facilita a propagação de novas imagens no cluster, tornando o processo mais eficiente e controlado. Dentro das configurações do Docker no arquivo \texttt{deamon.json} deve se adicionar (Código: \ref{code:docker_insecure_registry}).
+Após subir o Docker Registry e enviar as imagens para ele, é necessário alterar o arquivo \texttt{/etc/docker/daemon.json} no Docker para direcionar o \textit{pull} das imagens primeiramente ao serviço de registro configurado no \textbf{Controller}. Isso garante que, ao adicionar novos nós ao cluster, eles busquem as imagens diretamente do registro interno, assegurando a consistência das imagens. Além disso, essa configuração facilita a propagação de novas imagens no cluster, tornando o processo mais eficiente e controlado. Dentro das configurações do Docker no arquivo \texttt{deamon.json} deve se adicionar Código \ref{code:docker_insecure_registry}.
 
 
 \begin{listing}[h!]
@@ -171,7 +169,7 @@ Após subir o Docker Registry e enviar as imagens para ele, é necessário alter
 
 
 \subsection{Configuração Multinode}
-Para finalizar, é necessário ajustar o arquivo de configuração do Kolla-Ansible, chamado \textbf{multinode}, para especificar de forma clara quais serviços estão associados a cada nó do cluster. Nesta configuração, os serviços são organizados em grupos, como o \textbf{[Controler]}. No nosso caso, adicionamos o segundo nó ao grupo \textbf{[Storage]}. Essa definição no arquivo \textbf{multinode} garante que o \textbf{Controller} saiba exatamente onde cada serviço deve ser instalado e como acessar os demais nós. O arquivo \textbf{multinode} deve seguir o formato ilustrado no (Código \ref{code:config_multinode}).
+Para finalizar, é necessário ajustar o arquivo de configuração do Kolla-Ansible, chamado \textbf{multinode}, para especificar de forma clara quais serviços estão associados a cada nó do cluster. Nesta configuração, os serviços são organizados em grupos, como o \textbf{[Controler]}. No nosso caso, adicionamos o segundo nó ao grupo \textbf{[Storage]}. Essa definição no arquivo \textbf{multinode} garante que o \textbf{Controller} saiba exatamente onde cada serviço deve ser instalado e como acessar os demais nós. O arquivo \textbf{multinode} deve seguir o formato ilustrado no Código \ref{code:config_multinode}.
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -301,7 +299,7 @@ Em implantações como \textit{Kolla-Ansible}, esses arquivos podem ser gerencia
 \subsection{Rede}
 O serviço \textbf{Neutron} gerencia a criação de redes e \textit{subnets} virtuais (ou VPCs), onde se definem regras de firewall, roteamento e conexões entre instâncias. Cada projeto pode manter suas próprias redes isoladas, garantindo segurança e organização.
 
-A visualização da topologia de rede no Horizon (ou via \textit{CLI}) exibe como cada elemento (instâncias, roteadores e sub-redes) está interligado, ajudando a identificar rotas e possíveis pontos de falha. Após as configurações iniciais, é possível criar uma rede externa utilizando os seguintes comandos em (Código \ref{code:command_external_network})
+A visualização da topologia de rede no Horizon (ou via \textit{CLI}) exibe como cada elemento (instâncias, roteadores e sub-redes) está interligado, ajudando a identificar rotas e possíveis pontos de falha. Após as configurações iniciais, é possível criar uma rede externa utilizando os seguintes comandos em Código \ref{code:command_external_network}.
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -364,7 +362,7 @@ No contexto de software, atualizações e correções de erros são lançadas re
 
 \subsection{Atualização de Contêineres}
 
-Como mencionado anteriormente, o Kolla-Ansible isola os serviços do OpenStack em contêineres Docker. Essa arquitetura permite atualizar os contêineres de forma individual. No entanto, para garantir que todos os serviços sejam devidamente sincronizados, se comuniquem corretamente e, quando necessário, sejam reconfigurados automaticamente, recomenda-se realizar uma atualização completa utilizando como (Código \ref{code:update_kolla}):
+Como mencionado anteriormente, o Kolla-Ansible isola os serviços do OpenStack em contêineres Docker. Essa arquitetura permite atualizar os contêineres de forma individual. No entanto, para garantir que todos os serviços sejam devidamente sincronizados, se comuniquem corretamente e, quando necessário, sejam reconfigurados automaticamente, recomenda-se realizar uma atualização completa utilizando como Código \ref{code:update_kolla}:
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -400,12 +398,12 @@ Por fim, a análise do cluster é um passo essencial para garantir que a infraes
 
 
 \section{Implementação e Utilização de Recursos}
-O Heat é o serviço de orquestração do OpenStack que permite automatizar o gerenciamento de infraestrutura por meio de templates declarativos escritos em YAML. Com ele, você pode definir, provisionar e gerenciar recursos, como instâncias, volumes, redes e até aplicações inteiras, de forma padronizada e repetível. Esse serviço é especialmente útil para configurar ambientes de trabalho para novos estudantes, permitindo que iniciem projetos com rapidez e eficiência. Além disso, o mesmo template pode ser facilmente ajustado para adicionar mais recursos, conforme a necessidade do projeto.
+O Heat é o serviço de orquestração do OpenStack que permite automatizar o gerenciamento de infraestrutura por meio de templates declarativos escritos em YAML, naturalmente esse tipo de serviço é chamado de IaC  \textit{(Infraestructure as Code)}. Com ele, você pode definir, provisionar e gerenciar recursos, como instâncias, volumes, redes e até aplicações inteiras, de forma padronizada e repetível. Esse serviço é especialmente útil para configurar ambientes de trabalho para novos estudantes, permitindo que iniciem projetos com rapidez e eficiência. Além disso, o mesmo template pode ser facilmente ajustado para adicionar mais recursos, conforme a necessidade do projeto.
 
 Os próprios alunos também podem utilizar templates do Heat para gerenciar a infraestrutura de seus projetos. Isso facilita a demonstração de quais recursos foram utilizados e como o ambiente pode ser replicado de forma simples e eficiente. Essa abordagem promove organização e consistência no uso dos recursos de infraestrutura, otimizando o aprendizado e a colaboração em projetos acadêmicos.
 
-\subsection{Configuração para a utilização de \textit{IaC}}
-É possível que o serviço Heat não tenha permissões diretas para acessar e manipular o cluster. Para contornar essa limitação, normalmente criamos um arquivo de configuração específico para o Heat em /etc/kolla/config/heat.conf, utilizando a configuração como mostrado em (Código \ref{code:heat_configuration}).
+\subsection{Configuração para a utilização de IaC}
+É possível que o serviço Heat não tenha permissões diretas para acessar e manipular o cluster. Para contornar essa limitação, normalmente criamos um arquivo de configuração específico para o Heat em /etc/kolla/config/heat.conf, utilizando a configuração como mostrado em Código \ref{code:heat_configuration}.
 
 É altamente recomendável manter esses arquivos de configuração devidamente protegidos, pois eles geralmente contêm credenciais sensíveis. Essa prática deve ser aplicada a todos os arquivos localizados em /etc/kolla/, garantindo a segurança do ambiente e prevenindo acessos não autorizados.
 
@@ -425,7 +423,7 @@ Os próprios alunos também podem utilizar templates do Heat para gerenciar a in
 
 Uma aplicação prática do cluster em um ambiente acadêmico é sua integração com as atividades em sala de aula. Considere o seguinte cenário: você está ministrando uma aula sobre processamento de imagens e deseja disponibilizar uma instância para cada aluno. Essas instâncias podem ser configuradas previamente com um ambiente virtual e todos os pacotes necessários do Python já instalados, garantindo que os alunos possam se concentrar exclusivamente nos objetivos da aula.
 
-Para alcançar esse objetivo, é possível utilizar um único template do Heat. Aplicando o conceito de \texttt{HierarchicalMultitenancy}, criamos um subprojeto denominado \texttt{aula-proc-dig} dentro do projeto principal. Nesse subprojeto, as instâncias dos alunos serão provisionadas de forma organizada (Código \ref{code:template_heat_one}).
+Para alcançar esse objetivo, é possível utilizar um único template do Heat. Aplicando o conceito de \texttt{HierarchicalMultitenancy}, criamos um subprojeto denominado \texttt{aula-proc-dig} dentro do projeto principal. Nesse subprojeto, as instâncias dos alunos serão provisionadas de forma organizada Código \ref{code:template_heat_one}.
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -441,7 +439,7 @@ Para alcançar esse objetivo, é possível utilizar um único template do Heat. 
 
 \subsection{Criação de Projetos para Alunos de Pesquisa}
 
-Para atender alunos que estão iniciando projetos de pesquisa, como CNPq ou Trabalhos de Conclusão de Curso (TCC), é possível criar um template dedicado. Também seguindo o conceito de \texttt{HierarchicalMultitenancy}, podemos provisionar uma rede e uma instância isolada para cada aluno, permitindo que eles configurem o ambiente de acordo com suas necessidades específicas. Além disso, essa abordagem facilita a escalabilidade, possibilitando a alocação de recursos adicionais de maneira ágil e controlada, caso seja necessário (Código \ref{code:template_heat_two_part1}).
+Para atender alunos que estão iniciando projetos de pesquisa, como CNPq ou Trabalhos de Conclusão de Curso (TCC), é possível criar um template dedicado. Também seguindo o conceito de \texttt{HierarchicalMultitenancy}, podemos provisionar uma rede e uma instância isolada para cada aluno, permitindo que eles configurem o ambiente de acordo com suas necessidades específicas. Além disso, essa abordagem facilita a escalabilidade, possibilitando a alocação de recursos adicionais de maneira ágil e controlada, caso seja necessário Código \ref{code:template_heat_two_part1}.
 
 \begin{listing}[h!]
     \noindent\fcolorbox{black}{gray!10}{%
@@ -449,7 +447,7 @@ Para atender alunos que estão iniciando projetos de pesquisa, como CNPq ou Trab
       \inputminted[]{yaml}{files/template_heat_two_part1.yaml}
     }%
   }  
-  \caption{Parte 1: Exemplo de template Heat para provisionamento de projetos individuais de pesquisa, incluindo uma rede e uma instância configurável, com suporte à escalabilidade de recursos, continuação em (Código \ref{code:template_heat_two_part2}).}
+  \caption{Parte 1: Exemplo de template Heat para provisionamento de projetos individuais de pesquisa, incluindo uma rede e uma instância configurável, com suporte à escalabilidade de recursos, continuação em Código \ref{code:template_heat_two_part2}.}
   \label{code:template_heat_two_part1}
 \end{listing}
 
@@ -459,7 +457,7 @@ Para atender alunos que estão iniciando projetos de pesquisa, como CNPq ou Trab
     \inputminted[firstnumber=26]{yaml}{files/template_heat_two_part2.yaml}
   }%
 }  
-\caption{Parte 2: Criação dos recursos do necessário para rodar as instâncias com a imagem escolhida em (Código \ref{code:template_heat_two_part1}).}
+\caption{Parte 2: Criação dos recursos do necessário para rodar as instâncias com a imagem escolhida em Código \ref{code:template_heat_two_part1}.}
 \label{code:template_heat_two_part2}
 \end{listing}
 
