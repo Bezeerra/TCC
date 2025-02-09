@@ -5,7 +5,7 @@ Neste capítulo, abordaremos tópicos fundamentais relacionados à virtualizaç�
 
 \section{Introdução a Virtualização}
 
-Para começarmos a falar sobre a virtualização, precisamos entender o que ela é, para que serve e quais são suas aplicações práticas. A virtualização nada mais é do que a criação virtual de um serviço computacional sobre um hardware e um software reais~\citep{chirammal2016mastering}. Quando falamos de real e virtual, devemos entender que o real é o que está efetivamente executando na máquina principal, no computador raiz, enquanto o virtual será originado a partir dele, como um convidado dentro do software/hardware real. Por isso, podemos chamá-lo de `Serviço Computacional Convidado' \textit{(Guest Computing Service)} ou, como na maioria dos casos estamos lidando com sistemas operacionais, é comum chamá-los de `SO Convidado' \textit{(Guest OS)} ou até mesmo `VM Convidada' \textit{(Guest VM)}. A maneira como essa VM (Máquina Virtual) é hospedada dentro do software principal depende de como ela vai ser criada~\citep{chirammal2016mastering}, falaremos mais sobre criação de VMs.
+Para começarmos a falar sobre a virtualização, precisamos entender o que ela é, para que serve e quais são suas aplicações práticas. A virtualização nada mais é do que a criação virtual de um serviço computacional sobre hardwares e softwares reais~\citep{chirammal2016mastering}. Quando falamos de real e virtual, devemos entender que o real é o que está efetivamente executando na máquina principal, no computador raiz, enquanto o virtual será originado a partir dele, como um convidado dentro do software/hardware real. Por isso, podemos denominar de `Serviço Computacional Convidado' \textit{(Guest Computing Service)} ou, como geralmente estamos lidando com sistemas operacionais, é comum chamá-los de `SO Convidado' \textit{(Guest OS)} ou até mesmo `VM Convidada' \textit{(Guest VM)}. A maneira como essa VM (Máquina Virtual) é hospedada no software principal depende de como ela vai ser criada~\citep{chirammal2016mastering}, falaremos mais sobre criação de VMs.
 
  É fundamental entender as aplicações práticas da virtualização, já que utilizamos a todo momento. As aplicações de virtualização são diversas e abrangem diferentes aspectos da tecnologia. Vamos explorar algumas dessas aplicações como mencionadas por \cite{chirammal2016mastering}:
 
@@ -14,9 +14,9 @@ Para começarmos a falar sobre a virtualização, precisamos entender o que ela 
 
   \item \textbf{Isolamento de serviços}: A virtualização facilita o isolamento de serviços, evitando a necessidade de servidores dedicados para cada aplicação e reduzindo custos com melhor uso dos recursos disponíveis.
 
-  \item \textbf{Provisionamento rápido de servidores}: Com virtualização, máquinas virtuais podem ser criadas rapidamente a partir de imagens ou snapshots, sem precisar configurar manualmente recursos físicos, agilizando o processo.
+  \item \textbf{Provisionamento rápido de servidores}: Com virtualização, máquinas virtuais podem ser criadas rapidamente a partir de imagens ou \textit{snapshots}, sem precisar configurar manualmente recursos físicos, agilizando o processo.
 
-  \item \textbf{Recuperação de desastres}: A virtualização simplifica a recuperação de desastres, com snapshots atualizados que podem ser reimplantados rapidamente. Técnicas de migração de VMs aumentam a flexibilidade nesse processo.
+  \item \textbf{Recuperação de desastres}: A virtualização simplifica a recuperação de desastres, com \textit{snapshots} atualizados que podem ser reimplantados rapidamente. Técnicas de migração de VMs aumentam a flexibilidade nesse processo.
 
   \item \textbf{Balanceamento dinâmico de carga}: A virtualização permite mover VMs sobrecarregadas para servidores subutilizados, de acordo com políticas estabelecidas, otimizando o uso dos recursos.
 
@@ -24,12 +24,12 @@ Para começarmos a falar sobre a virtualização, precisamos entender o que ela 
 
   \item \textbf{Maior confiabilidade e segurança}: A virtualização cria uma camada de abstração que protege o sistema contra falhas físicas e permite configurar ambientes isolados, aumentando a segurança da infraestrutura.
 
-  \item \textbf{Independência do hardware}: A virtualização elimina o lock-in de hardware, permitindo mais flexibilidade na escolha de equipamentos e garantindo maior continuidade operacional.
+  \item \textbf{Independência do hardware}: A virtualização elimina o \textit{lock-in} de hardware, permitindo mais flexibilidade na escolha de equipamentos e garantindo maior continuidade operacional.
 \end{itemize}
 
 
 \subsection{Anéis de segurança na arquitetura x86\_64}
-Neste projeto, vamos focar na orquestração de VMs com a arquitetura x86-64, que é a mais utilizada no mercado entre os diferentes serviços nuvem \citep{DataCenterCPUMarketAMDSurpassesIntelinShareGrowth}. Essa arquitetura apresenta uma forma interessante de segurança, separando as aplicações em anéis de segurança. Ao todo, temos quatro anéis, sendo o anel 0 o mais privilegiado, onde fica o kernel, que realiza funções críticas ao hardware, e o anel 3 o menos privilegiado. Na Figura \ref{fig:rings_x86} podemos visualizar melhor como funciona o separamento dos aneis, tendo o kernel direto no anel 0, drivers que precisam de acesso significativo ao hardware no anel 1 e 2 e no anel 3 as aplicações normais de usuários, que não precisam de acesso direto ao hardware.
+Neste projeto, vamos focar na orquestração de VMs com a arquitetura x86-64, que é a mais utilizada no mercado entre os diferentes serviços nuvem \citep{DataCenterCPUMarketAMDSurpassesIntelinShareGrowth}. Essa arquitetura apresenta uma forma interessante de segurança, separando as aplicações em anéis de segurança. Ao todo, temos quatro anéis, sendo o anel 0 o mais privilegiado, onde fica o kernel, que realiza funções críticas ao hardware, e o anel 3 o menos privilegiado. Na Figura \ref{fig:rings_x86} podemos visualizar melhor como funciona a separação dos anéis, tendo o kernel direto no anel 0, drivers que precisam de acesso significativo ao hardware no anel 1 e 2 e no anel 3 as aplicações normais de usuários, que não precisam de acesso direto ao hardware.
 
 
 \begin{figure}[htbp]
@@ -39,15 +39,14 @@ Neste projeto, vamos focar na orquestração de VMs com a arquitetura x86-64, qu
   \label{fig:rings_x86}
 \end{figure}
 
-Essa lógica de segurança em formato de anéis ajuda na virtualização e no controle dos \textit{hypervisores}, os quais explicaremos logo em seguida. Os anéis de nível mais baixo, anel 0, têm acesso aos anéis de nível mais alto, anel 3, mas não vice-versa. O SO realiza a segmentação, um método utilizado para definir diferentes regiões da memória com níveis de privilégio distintos. No Linux e na maioria dos sistemas operacionais modernos, o que mais importa é o anel 3 (user mode), menos privilegiado, e o anel 0 (kernel mode), mais privilegiado~\citep{modernOS}. Os demais anéis também são utilizados para armazenar drivers que precisam de mais privilégio que o modo usuário mas menos do que o kernel.
+Essa lógica de segurança em formato de anéis ajuda na virtualização e no controle dos \textit{hypervisores}, os quais explicaremos logo em seguida. Os anéis de nível mais baixo, anel 0, têm acesso aos anéis de nível mais alto, anel 3, mas não vice-versa. O SO realiza a segmentação, um método utilizado para definir diferentes regiões da memória com níveis de privilégio distintos. No Linux e na maioria dos sistemas operacionais modernos, o que mais importa é o anel 3 \textit{(user mode)}, menos privilegiado, e o anel 0 \textit{(kernel mode)}, mais privilegiado~\citep{modernOS}. Os demais anéis também são utilizados para armazenar drivers que precisam de mais privilégio que o modo usuário mas menos do que o kernel.
 
-A interação entre o hardware e o sistema operacional na arquitetura x86-64 é fundamental para garantir a segurança e integridade do sistema. Cada anel de privilégio possui um conjunto específico de instruções que pode executar, e o hardware implementa mecanismos que restringem o acesso a essas instruções de acordo com o nível de privilégio. Por exemplo, o código que roda no anel 3, onde estão as aplicações de usuário, não pode executar diretamente instruções privilegiadas que interagem com o hardware, como manipular registros de controle ou acessar diretamente dispositivos de E/S (entrada/saída)~\citep{chirammal2016mastering}. 
+A interação entre o hardware e o sistema operacional na arquitetura x86-64 é fundamental para garantir a segurança e integridade do sistema. Cada anel de privilégio possui um conjunto específico de instruções que pode executar, e o hardware implementa mecanismos que restringem o acesso a essas instruções conforme o nível de privilégio. Por exemplo, o código que roda no anel 3, onde estão as aplicações de usuário, não pode executar diretamente instruções privilegiadas que interagem com o hardware, como manipular registros de controle ou acessar diretamente dispositivos de E/S (entrada/saída)~\citep{chirammal2016mastering}. 
 
 Além disso, o hardware utiliza tabelas de descritores de segmentos e tabelas de páginas para garantir que cada anel tenha acesso apenas às porções de memória designadas para seu nível de privilégio. Esses mecanismos previnem, por exemplo, que um código malicioso em anel 3 tente acessar diretamente áreas de memória que pertencem ao kernel ou a outras aplicações. Dessa forma, a combinação de segmentação, gerenciamento de memória e controle de instruções pelo hardware e SO forma uma barreira eficaz contra violações de segurança~\citep{chirammal2016mastering}.
 
 
-
-\subsection{\textit{hypervisor} ou VMM}
+\subsection{\textit{Hypervisor} ou VMM}
 
 Ao lidarmos com máquinas virtuais (VMs), é essencial contar com um serviço que gerencie essas instâncias de maneira eficiente, permitindo que possamos iniciar, excluir e replicar nossas máquinas de forma organizada. Esse serviço é desempenhado pelo \textit{hypervisor}, cujo papel é fornecer suporte a múltiplas cópias do hardware físico~\citep{modernOS}. Nos hypervisores modernos, é possível visualizar detalhes de cada VM em execução, como logs, utilização de recursos, tráfego de rede, entre outros aspectos. Além disso, o \textit{hypervisor} é responsável por definir como a VM será construída e como interagirá com o sistema operacional principal~\citep{chirammal2016mastering}.
 
@@ -62,10 +61,10 @@ O \textit{hypervisor} desempenha um papel crucial na tradução de chamadas de s
 \end{figure}
 
 
-As arquiteturas de \textit{hypervisores} também podem variar bastante de um sistema operacional para outro. No caso do Windows, o \textit{hypervisor} mais utilizado é o Hyper-V, que também é a solução adotada pela Azure para a implementação de sua infraestrutura como serviço (IaaS) \href{https://learn.microsoft.com/pt-br/azure/architecture/reference-architectures/n-tier/high-security-iaas}. No entanto, nesta pesquisa, nosso foco será no sistema operacional Linux, devido à sua predominância no mercado de servidores~\citep{OperationSystemMarketVolume} e ao fato de ser open-source~\citep{WhyUseLinux}. Especificamente, abordaremos o \textit{hypervisor KVM (Kernel-based Virtual Machine)}, que é amplamente utilizado nos principais provedores de IaaS, como AWS e Google.
+As arquiteturas de \textit{hypervisores} também podem variar bastante de um sistema operacional para outro. No caso do Windows, o \textit{hypervisor} mais utilizado é o Hyper-V, que também é a solução adotada pela Azure para a implementação de sua infraestrutura como serviço (IaaS) \href{https://learn.microsoft.com/pt-br/azure/architecture/reference-architectures/n-tier/high-security-iaas}. No entanto, nesta pesquisa, nosso foco será no sistema operacional Linux, devido à sua predominância no mercado de servidores~\citep{OperationSystemMarketVolume} e ao fato de ser \textit{open-source}~\citep{WhyUseLinux}. Especificamente, abordaremos o \textit{hypervisor KVM (Kernel-based Virtual Machine)}, que é amplamente utilizado nos principais provedores de IaaS, como AWS e Google.
 
 
-\subsection{\textit{hypervisor} Tipo 1 (Nativo ou Bare Metal)}
+\subsection{\textit{Hypervisor} Tipo 1 (Nativo ou Bare Metal)}
 
 A Figura \ref{fig:hypervisor_type01} ilustra o \textit{hypervisor} tipo 1, que é o mais utilizado quando estamos falando de IaaS, o motivo é que ele opera junto ao hardware, as chamadas críticas são feitas diretas no kernel do OS aumentando sua performance~\citep{chirammal2016mastering}, um exemplo notável é o \textit{hypervisor KVM} do Linux. Ele consegue transformar kernel do Linux em um \textit{hypervisor} fazendo com que a VM seja vista como um processo dentro do sistema, como podemos ver na imagem não temos camadas itermediárias para rodar o \textit{hypervisor}, ele roda junto ao \textit{hardware}.
 
@@ -79,12 +78,12 @@ A Figura \ref{fig:hypervisor_type01} ilustra o \textit{hypervisor} tipo 1, que �
 \end{figure}
 
 
-Perceba que no bare metal não temos a ideia de um host OS, o hypervsior está direto com o hardware porque roda junto ao kernel.
+Perceba que no \textit{bare metal} não temos a ideia de um \textit{host OS}, o hypervsior está direto com o hardware porque é executado junto ao kernel.
 
 
 \subsection*{\textit{hypervisor} Tipo 2 (Hospedeiro)}
 
-O \textit{hypervisor} tipo 2, mostrado na figura \ref{fig:hypervisor_type02}, requer um sistema operacional host principal para funcionar, sendo útil pela facilidade de manuseio e instalação. No entanto, ele não é a melhor opção quando se necessita de alta performance e escalabilidade. Isso se deve, claramente, às camadas adicionais de software que ele introduz. Diferentemente de um \textit{hypervisor} bare metal, o \textit{hypervisor} hospedeiro gera uma sobrecarga maior por operar dentro de um sistema operacional, resultando em chamadas de sistema que são intermediadas pelo \textit{host OS}. Essa configuração cria uma camada de abstração adicional, que pode reduzir a eficiência nas operações críticas.
+O \textit{hypervisor} tipo 2, mostrado na figura \ref{fig:hypervisor_type02}, requer um sistema operacional host principal para funcionar, sendo útil pela facilidade de manuseio e instalação. No entanto, ele não é a melhor opção quando se necessita de alta performance e escalabilidade. Isso se deve, claramente, às camadas adicionais de software que ele introduz. Diferentemente de um \textit{hypervisor} bare metal, o \textit{hypervisor} hospedeiro gera uma sobrecarga maior por operar dentro de um sistema operacional, resultando em chamadas de sistema intermediadas pelo \textit{host OS}. Essa configuração cria uma camada de abstração adicional, que pode reduzir a eficiência nas operações críticas.
 
 
 \begin{figure}[htbp]
@@ -96,7 +95,7 @@ O \textit{hypervisor} tipo 2, mostrado na figura \ref{fig:hypervisor_type02}, re
 \end{figure}
 
 
-Neste caso o \textit{hypervisor} e visto de fato como um serviço a parte que está executando no sitema operacional e a VM será vista como um filho desse serviço.
+Neste caso o \textit{hypervisor} e visto de fato como um serviço a parte que está executando no sistema operacional e a VM será vista como um filho desse serviço.
 
 
 \section{Virtualizações}
@@ -105,7 +104,7 @@ Existem três grandes formas de efetuar a virtualização por meio do \textit{hy
 
 \subsection{Virtualização Completa \textit{(Full Virtualization)}}
 
-Neste método, o \textit{hypervisor} emula o hardware para permitir que o sistema operacional convidado (\textit{Guest OS}) opere como se estivesse em uma máquina física independente como monstrado na figura \ref{fig:full_virtualization_rings}. Não há necessidade de modificações no sistema operacional convidado, pois ele não sabe que está sendo virtualizado. Praticamente todas as funções são traduzidas pelo \textit{hypervisor}, evitando chamadas diretas da VM para o kernel do host. O \textit{Guest OS} roda no anel 1, enquanto a máquina virtual (\textit{Virtual Machines Monitor} - VMM) roda no anel 0~\citep{chirammal2016mastering}.
+Neste método, o \textit{hypervisor} emula o hardware para permitir que o sistema operacional convidado (\textit{Guest OS}) opere como se estivesse em uma máquina física independente como mostrado na figura \ref{fig:full_virtualization_rings}. Não há necessidade de modificações no sistema operacional convidado, pois ele não sabe que está sendo virtualizado. Praticamente todas as funções são traduzidas pelo \textit{hypervisor}, evitando chamadas diretas da VM para o kernel do host. O \textit{Guest OS} roda no anel 1, enquanto a máquina virtual (\textit{Virtual Machines Monitor} - VMM) roda no anel 0~\citep{chirammal2016mastering}.
 
 \begin{figure}[htbp]
   \centering
@@ -120,13 +119,13 @@ Esse estilo de virtualização utiliza o mecanismo \textit{Trap and Emulate} (Ar
 
 \subsection{Paravirtualização}
 
-Nesse caso, o \textit{Guest OS} é modificado para interagir diretamente com o \textit{hypervisor}, resultando em um desempenho melhor em comparação à virtualização completa. As instruções sensíveis são removidas, e, em vez disso, o sistema operacional realiza chamadas diretas ao \textit{hypervisor} para operações como E/S e mudanças em registros críticos, similar a como programas de aplicação fazem chamadas de sistema em Linux~\citep{modernOS}.
+Nesse caso, o \textit{Guest OS} é modificado para interagir diretamente com o \textit{hypervisor}, resultando em um desempenho melhor em comparação à virtualização completa. As instruções sensíveis são removidas, e, em vez disso, o sistema operacional realiza chamadas diretas ao \textit{hypervisor} para operações como E/S e mudanças em registros críticos, similar a como programas de aplicação fazem no sistema Linux~\citep{modernOS}.
 
-A figura \ref{fig:paravirtualization_rings} mostra como o SO convidado modificado realiza chamadas críticas diretamente para o \textit{hypervisor} por meio de \textit{hypercalls}. Como o SO foi adaptado para trabalhar nesse ambiente, o tratamento de chamadas sensíveis se torna mais eficiente, reduzindo a necessidade de simulação todas as instruções.
+A figura \ref{fig:paravirtualization_rings} mostra como o SO convidado modificado realiza chamadas críticas diretamente para o \textit{hypervisor} através de \textit{hypercalls}. Como o SO foi adaptado para trabalhar nesse ambiente, o tratamento de chamadas sensíveis se torna mais eficiente, reduzindo a necessidade de simulação todas as instruções.
 
 \begin{figure}[htbp]
   \centering
-  \caption{Paravirtualização nos anéis de segurança. A figura mostra como o sistema operacional convidado modificado realiza chamadas críticas diretamente para o \textit{hypervisor} por meio de hypercalls, tornando o tratamento mais eficiente e reduzindo a necessidade de emulação.}
+  \caption{Paravirtualização nos anéis de segurança. A figura mostra como o sistema operacional convidado modificado realiza chamadas críticas diretamente para o \textit{hypervisor} através de hypercalls, tornando o tratamento mais eficiente e reduzindo a necessidade de emulação.}
   \includegraphics[width=0.6\textwidth]{images/paravirtualization_rings.png}
   \caption*{\textit{Fonte:} Adaptado de~\citep{chirammal2016mastering}.}
   \label{fig:paravirtualization_rings}
@@ -136,7 +135,7 @@ O \textit{Guest OS} opera no anel zero, aproveita as modificações nas chamadas
 
 \subsection{Virtualização Assistida por Hardware}
 
-A forma mais eficiente de virtualização é a assistida por hardware, que utiliza recursos nativos do processador, como Intel VT-x ou AMD-V, para executar funções de virtualização diretamente no hardware. Além disso, funções nativas do kernel Linux podem ser utilizadas para otimizar o controle das VMs~\citep{chirammal2016mastering}. Quando uma instrução sensível é executada, o hardware captura a operação e a passa ao \textit{hypervisor} para emulação~\citep{modernOS}.
+Geralmente é alcançado uma maior performance com a virtualização assistida por hardware, que utiliza recursos nativos do processador, como Intel VT-x ou AMD-V, para executar funções de virtualização diretamente no hardware. Além disso, funções nativas do kernel Linux podem ser utilizadas para otimizar o controle das VMs~\citep{chirammal2016mastering}. Quando uma instrução sensível é executada, o hardware captura a operação e a passa ao \textit{hypervisor} para emulação~\citep{modernOS}.
 
 A figura \ref{fig:hardware_assisted_rings} apresenta uma visão esquemática dos diferentes anéis de privilégio utilizados na virtualização assistida por hardware. Nela, o \textit{Guest OS} opera no anel zero, o mesmo nível de privilégio em que um sistema operacional tradicional funcionaria em uma máquina física, enquanto o \textit{hypervisor} assume um papel central no anel -1, criado especificamente para gerenciar diretamente o acesso ao hardware. Essa estrutura permite que o \textit{hypervisor} intercepte chamadas sensíveis e controle os recursos de forma eficiente, enquanto o sistema convidado e suas aplicações continuam a operar como se tivessem controle completo sobre o hardware subjacente.
 
@@ -148,15 +147,15 @@ A figura \ref{fig:hardware_assisted_rings} apresenta uma visão esquemática dos
   \label{fig:hardware_assisted_rings}
 \end{figure}
 
-A virtualização assistida por hardware se destaca pela eficiência porquê o processador fica responsável por lidar diretamente com operações sensíveis, eliminando a necessidade de emular essas instruções no software. Essa abordagem reduz a latência associada às traps e minimiza o impacto no desempenho causado pela invalidação de caches e TLBs. O uso de anéis de privilégio dedicados, como o anel -1 para o \textit{hypervisor}, permite que os sistemas convidados operem de forma isolada e com alta performance, enquanto o \textit{hypervisor} gerencia as interações críticas com o hardware de maneira otimizada~\citep{chirammal2016mastering}.
+A virtualização assistida por hardware se destaca pela eficiência porquê o processador fica responsável por lidar diretamente com operações sensíveis, eliminando a necessidade de emular essas instruções no software. Essa abordagem reduz a latência associada às \textit{traps} e minimiza o impacto no desempenho causado pela invalidação de caches e TLBs. O uso de anéis de privilégio dedicados, como o anel -1 para o \textit{hypervisor}, permite que os sistemas convidados operem de forma isolada e com alta performance, enquanto o \textit{hypervisor} gerencia as interações críticas com o hardware de maneira otimizada~\citep{chirammal2016mastering}.
 
 \subsection{Considerações sobre os tipos de virtualização}
 
-Não são apenas as funções críticas que são traduzidas pelo \textit{hypervisor}. Utilizando a tecnologia VT (Virtualization Technology), o hardware gera uma grande quantidade de interrupções, conhecidas como traps. Essas traps podem prejudicar significativamente o desempenho do sistema, pois invalidam o cache da CPU e os TLBs \textit{(Translation Lookaside Buffers)}, que são ewssenciais para o rápido acesso à memória. Quando o cache e os TLBs são invalidados, a CPU precisa recarregar essas informações, o que aumenta a latência e reduz a eficiência geral. Para mitigar esses efeitos negativos, o \textit{hypervisor} captura e traduz algumas funções não críticas. Isso é feito para reduzir a frequência das traps e, consequentemente, diminuir o impacto sobre o desempenho. Ao gerenciar melhor quais funções precisam ser interceptadas e traduzidas, o \textit{hypervisor} pode manter um equilíbrio entre a funcionalidade e a eficiência do sistema~\citep{modernOS}.
+Não são apenas as funções críticas que são traduzidas pelo \textit{hypervisor}. Utilizando a tecnologia VT (Virtualization Technology), o hardware gera uma grande quantidade de interrupções, conhecidas como \textit{traps}. Essas \textit{traps} podem prejudicar significativamente o desempenho do sistema, pois invalidam o cache da CPU e os TLBs \textit{(Translation Lookaside Buffers)}, que são ewssenciais para o rápido acesso à memória. Quando o cache e os TLBs são invalidados, a CPU precisa recarregar essas informações, o que aumenta a latência e reduz a eficiência geral. Para mitigar esses efeitos negativos, o \textit{hypervisor} captura e traduz algumas funções não críticas. Isso é feito para reduzir a frequência das \textit{traps} e, consequentemente, diminuir o impacto sobre o desempenho. Ao gerenciar melhor quais funções precisam ser interceptadas e traduzidas, o \textit{hypervisor} pode manter um equilíbrio entre a funcionalidade e a eficiência do sistema~\citep{modernOS}.
 
 Lembrando que essas 3 são formas gerais de virtualização, como serão feitas as traduções binárias das funções críticas a emulação entre outros detalhes vai depender do \textit{hypervisor} que está sendo utilizado. Nenhuma instrução sensível emitida pelo sistema operacional hóspede jamais é executada diretamente pelo verdadeiro hardware. Elas são transformadas em chamadas pelo \textit{hypervisor}, que então as emula~\citep{modernOS}.
 
-Como estamos falando que computação em nuvem nosso foco vai ser o \textit{hypervisor} do tipo 1 e com a virtualização assistida pelo hardware utilizado pelo OpenStack, o mótivo dessa escolha é pelos detalhes que falamos a cima, precisamos do máximo de performace possível e alta escalabilidade, o OpenStack aceita vários tipos de \textit{hypervisors} mas por padrão é utilizado o QEMU/KVM~\citep{DocumentacaoOpenstack}.
+Como estamos falando que computação em nuvem nosso foco vai ser o \textit{hypervisor} do tipo 1 e com a virtualização assistida pelo hardware utilizado pelo OpenStack, o mótivo dessa escolha é pelos detalhes que falamos a cima, precisamos do máximo de performace possível e alta escalabilidade, o OpenStack aceita vários modelos de \textit{hypervisors} mas por padrão é utilizado o QEMU/KVM~\citep{DocumentacaoOpenstack}.
 
 
 \section{Importância das Tecnologias de Virtualização para VMs}
@@ -170,12 +169,12 @@ Um exemplo de criação de uma máquina virtual utilizando o \textit{libvirt} co
 
 O \textit{libvirt} é, na verdade, um conjunto de APIs chamado ``Virtualization API'', que permite o gerenciamento padronizado de várias plataformas de virtualização, como KVM, QEMU, Xen, VMware, Hyper-V, e LXC. Essas APIs fornecem uma camada de abstração, permitindo que diferentes \textit{hypervisors} sejam controlados de maneira uniforme e consistente~\citep{chirammal2016mastering}. Isso torna o \textit{libvirt} uma ferramenta central em ambientes de virtualização complexos e escaláveis.
 
-Como mostrado da figura \ref*{fig:libvirt_interface}, ele utiliza dos \textit{driver} de cada \textit{hypervisor}, os \textit{drivers} são descobertos durante o processo de conexão com a API. Cada \textit{driver} tem uma API de registro que carrega as referências de função específicas do \textit{driver} para as APIs libvirt chamarem, assim como os respectivos protocolos utilizados por essas APIs. A arquitetura do \textit{driver} também é usada para dar suporte a outros componentes de virtualização, como armazenamento, pools de armazenamento, dispositivo host, rede, interfaces de rede e filtros de rede~\citep{LibvirtDocumentation}. Um exemplo simples de XML configurado para 1 vCPU utilizando o KVM e o QEMU, armazenando a imagem no arquivo do tipo QCOW2 pode ser visto em Código \ref{code:example_kvm_qemu}.
+Como mostrado da figura \ref*{fig:libvirt_interface}, ele utiliza dos \textit{driver} de cada \textit{hypervisor}, os \textit{drivers} são descobertos durante o processo de conexão com a API. Cada \textit{driver} tem uma API de registro que carrega as referências de função específicas do \textit{driver} para as APIs libvirt chamarem, assim como os respectivos protocolos utilizados por essas APIs. A arquitetura do \textit{driver} também é usada para dar suporte a outros componentes de virtualização, como armazenamento, \textit{pools} de armazenamento, dispositivo host, rede, interfaces de rede e filtros de rede~\citep{LibvirtDocumentation}. Um exemplo simples de XML configurado para 1 vCPU utilizando o KVM e o QEMU, armazenando a imagem no arquivo do tipo QCOW2 pode ser visto em Código \ref{code:example_kvm_qemu}.
 
 
 \begin{figure}[htbp]
   \centering
-  \caption{Interface para drivers do \textit{libvirt}. A figura ilustra como o \textit{libvirt} se conecta a diferentes hypervisores por meio de drivers específicos, permitindo o gerenciamento padronizado de componentes de virtualização, como rede, armazenamento e dispositivos.}
+  \caption{Interface para drivers do \textit{libvirt}. A figura ilustra como o \textit{libvirt} se conecta a diferentes hypervisores através de drivers específicos, permitindo o gerenciamento padronizado de componentes de virtualização, como rede, armazenamento e dispositivos.}
   \includegraphics[width=0.7\textwidth]{images/libvirt_interface.png}
   \caption*{\textit{Fonte:} Adaptado de~\citep{LibvirtDocumentation}.}
   \label{fig:libvirt_interface}
@@ -187,14 +186,14 @@ Como mostrado da figura \ref*{fig:libvirt_interface}, ele utiliza dos \textit{dr
     \inputminted[]{html}{files/example.xml}
   }%
 }  
-\caption{Exemplo de configuração em XML para uma VM utilizando KVM e QEMU. O arquivo define as especificações da máquina virtual, incluindo uma vCPU, memória, tipo de armazenamento em formato QCOW2, e outras configurações essenciais para a inicialização e operação da VM.}
+\caption{Exemplo de configuração em XML para uma VM utilizando KVM e QEMU. O arquivo define as especificações da máquina virtual, incluindo uma vCPU, memória, armazenamento em formato QCOW2, e outras configurações essenciais para a inicialização e operação da VM.}
 \label{code:example_kvm_qemu}
 \end{listing}
 
 
 O código \ref{code:example_kvm_qemu} contém as informações necessárias para configurar a VM, incluindo a memória, quantidade de vCPUs, imagem de carregamento, tipo de arquivo, entre outras configurações.
 
-Naturalmente, para salvar o storage das VMs, utilizamos o arquivo QCOW2 \textit{(QEMU Copy On Write version 2)}. Ele possui diversas funcionalidades que ajudam no manuseio das imagens e na escalabilidade. Sua estrutura foi desenhada pelo QEMU pensando no manuseio de VMs, por isso inclui recursos como snapshots, compressão, encriptação e redimensionamento dinâmico.
+Naturalmente, para salvar o armazenamento das VMs, utilizamos o arquivo QCOW2 \textit{(QEMU Copy On Write version 2)}. Ele possui diversas funcionalidades que ajudam no manuseio das imagens e na escalabilidade. Sua estrutura foi desenhada pelo QEMU pensando no manuseio de VMs, por isso inclui recursos como \textit{snapshots}, compressão, encriptação e redimensionamento dinâmico.
 
 
 \subsection{KVM - \textit{Kernel-based Virtual Machine}}
@@ -214,12 +213,12 @@ De forma geral, o módulo de kernel do KVM é responsável por diversas funçõe
 
     \item \textbf{Interrupções e Exceções}: Lida com interrupções e exceções geradas por chamadas críticas, utilizando virtualização assistida por hardware para emular respostas apropriadas.
 
-    \item \textbf{Controle e Monitoramento}: Expondo uma interface por meio de \textit{ioctls}, o KVM permite a configuração, controle e monitoramento das VMs.
+    \item \textbf{Controle e Monitoramento}: Expondo uma interface através de \textit{ioctls}, o KVM permite a configuração, controle e monitoramento das VMs.
 
     \item \textbf{Segurança e Isolamento}: Garante a segurança e o isolamento das VMs, controlando o acesso a cada espaço de memória e evitando interferências entre as VMs.
 \end{itemize}
 
-Na figura \ref{fig:qemu_kvm_architecture}, é ilustrada a arquitetura do hipervisor \textit{QEMU/KVM}, mostrando como o QEMU e o KVM interagem para emular uma virtualização, gerenciar vCPUs e realizar transições entre os modos do host e do convidado. Na seção superior, o modelo de máquina virtual exibe componentes como o subsistema de E/S e os threads da CPU responsáveis pela execução das instruções da VM. Já a seção inferior destaca o papel do KVM, que utiliza APIs específicas e tabelas de páginas estendidas (\textit{EPT}) para gerenciar memória e executar VMs em modo convidado, enquanto monitora eventos de saída (\textit{VM Exit}) e lida com interrupções, entradas/saídas e violações de página. Essa integração entre QEMU e KVM resulta em uma infraestrutura robusta para virtualização assistida por hardware, assegurando desempenho e isolamento entre as VMs.
+Na figura \ref{fig:qemu_kvm_architecture}, é ilustrada a arquitetura do \textit{hypervisor QEMU/KVM}, mostrando como o QEMU e o KVM interagem para emular uma virtualização, gerenciar vCPUs e realizar transições entre os modos do host e do convidado. Na seção superior, o modelo de máquina virtual exibe componentes como o subsistema de E/S e os \textit{threads} da CPU responsáveis pela execução das instruções da VM. Já a seção inferior destaca o papel do KVM, que utiliza APIs específicas e tabelas de páginas estendidas (\textit{EPT}) para gerenciar memória e executar VMs em modo convidado, enquanto monitora eventos de saída (\textit{VM Exit}) e lida com interrupções, entradas/saídas e violações de página. Essa integração entre QEMU e KVM resulta em uma infraestrutura robusta para virtualização assistida por hardware, assegurando desempenho e isolamento entre as VMs.
 
 \begin{figure}[htbp]
   \centering
@@ -251,8 +250,9 @@ Essa relação é de extrema importância para o \textit{\textbf{QEMU-KVM}}, poi
 
 Como comentado, uma vCPU, que é a CPU da VM, é implementada como uma \textit{thread} POSIX. Isso significa que ela funciona como uma conexão ao CPU físico, com funções que ajudam a controlá-la. Essas \textit{threads} são semelhantes a qualquer outra \textit{thread} no sistema operacional \textit{host} em termos de execução~\citep{chirammal2016mastering}.
 
-A forma como cada vCPU será processada depende de como o escalonador do Linux irá tratá-la. O escalonador do Linux gerencia a alocação de tempo de CPU para todas as \textit{threads}, incluindo aquelas que representam vCPUs. Em geral, podemos esperar uma média de 2 \textit{threads} vCPU para cada núcleo físico da CPU, embora isso possa variar dependendo da aplicação e do hardware utilizado~\citep{TechTargetvCPU}.
+Como cada vCPU será processada depende de como o escalonador do Linux irá tratá-la. O escalonador do Linux gerencia a alocação de tempo de CPU para todas as \textit{threads}, incluindo aquelas que representam vCPUs. Em geral, podemos esperar uma média de 2 \textit{threads} vCPU para cada núcleo físico da CPU, embora isso possa variar dependendo da aplicação e do hardware utilizado~\citep{TechTargetvCPU}.
 
+% TODO STOP HERE
 \subsection{Alocação de Memória}
 
 A alocação de memória é uma parte crítica no processo de criação e gerenciamento de máquinas virtuais (VMs). Cada VM precisa de sua própria área de memória para operar, e o gerenciamento dessa memória é essencial para garantir que o sistema \textit{host} possa suportar múltiplas VMs simultaneamente sem sobrecarregar os recursos disponíveis. De forma geral, cada VM possui suas próprias tabelas de páginas que mapeiam endereços de memória virtual para endereços de memória física~\citep{modernOS}.
@@ -281,7 +281,7 @@ Junto a todas essas tecnologias, utilizamos também algoritmos para efetuar o ba
 
 \section{Containers}
 
-Container é uma forma leve de virtualização que permite isolar processos e seus recursos em um ambiente controlado e consistente. Os containers compartilham o mesmo \textit{kernel} do sistema operacional, mas são isolados uns dos outros e do sistema \textit{host}, proporcionando uma maneira eficiente de executar aplicações com suas dependências em um ambiente previsível.
+container é uma forma leve de virtualização que permite isolar processos e seus recursos em um ambiente controlado e consistente. Os containers compartilham o mesmo \textit{kernel} do sistema operacional, mas são isolados uns dos outros e do sistema \textit{host}, proporcionando uma maneira eficiente de executar aplicações com suas dependências em um ambiente previsível.
 
 O \textbf{LXC} (\textit{Linux Containers}) foi a primeira grande implementação dos containers como conhecemos hoje em dia~\citep{HistoryOfCloudByIBM}, um serviço isolado executando com uma certa limitação de hardware e de fácil criação. Esse novo sistema serviu de inspiração para o desenvolvimento de grandes serviços usados na indústria hoje em dia, como o \textbf{Docker}.
 
@@ -396,11 +396,11 @@ Na Figura \ref{fig:map_openstack}, é possível observar os principais component
 A arquitetura do OpenStack, como comentado, é composta por vários componentes interconectados, cada um desempenhando uma função específica dentro do ambiente de nuvem. A Figura \ref{fig:openstack_conceptual_architecture} mostra a arquitetura conceitual do OpenStack, destacando como esses componentes colaboram para fornecer uma solução integrada e escalável. A seguir, são descritos os principais componentes do OpenStack:
 
 \begin{itemize}
-    \item \textbf{Nova (Compute): } Responsável pela criação e gerenciamento de instâncias de máquinas virtuais (VMs) e contêineres. Similar ao EC2 da AWS, o Nova oferece um serviço robusto para provisionamento de instâncias, integrando-se com outros componentes como Neutron e Cinder para garantir escalabilidade e eficiência~\citep{OpenStackNovaArchitecture}.
+    \item \textbf{Nova (Compute): } Responsável pela criação e gerenciamento de instâncias de máquinas virtuais (VMs) e containeres. Similar ao EC2 da AWS, o Nova oferece um serviço robusto para provisionamento de instâncias, integrando-se com outros componentes como Neutron e Cinder para garantir escalabilidade e eficiência~\citep{OpenStackNovaArchitecture}.
     \item \textbf{Neutron (Networking): } O Neutron é o serviço de rede do OpenStack, fornecendo conectividade como um serviço. Ele gerencia redes, sub-redes, roteadores, balanceadores de carga e firewalls, permitindo a criação e configuração de redes virtuais que conectam as instâncias gerenciadas pelo Nova~\citep{OpenStackNeutronArchitecture}.
     \item \textbf{Keystone (Identity Service): } O Keystone é o serviço de identidade e autenticação do OpenStack. Ele gerencia usuários e permissões, fornecendo uma estrutura centralizada de autenticação para todos os serviços do OpenStack e auxiliando na aplicação de políticas de acesso.
     \item \textbf{Cinder (Block Storage): } O Cinder gerencia volumes de armazenamento persistente, que podem ser anexados e desanexados de instâncias conforme necessário. Esses volumes são ideais para armazenamento de dados que requerem acesso rápido e alta durabilidade.
-    \item \textbf{Swift (Object Storage): } O Swift é o sistema de armazenamento de objetos, projetado para armazenar e recuperar grandes quantidades de dados não estruturados. Ele armazena dados em contêineres distribuídos, oferecendo uma solução escalável e resiliente, ideal para arquivos estáticos, backups e outros dados que não requerem acesso frequente, funciona muito parecio ao \textit{S3} da AWS.
+    \item \textbf{Swift (Object Storage): } O Swift é o sistema de armazenamento de objetos, projetado para armazenar e recuperar grandes quantidades de dados não estruturados. Ele armazena dados em containeres distribuídos, oferecendo uma solução escalável e resiliente, ideal para arquivos estáticos, backups e outros dados que não requerem acesso frequente, funciona muito parecio ao \textit{S3} da AWS.
     \item \textbf{Glance (Image Service): } O Glance gerencia as imagens de disco usadas para inicializar instâncias. Ele permite o upload, armazenamento e recuperação de imagens diretamente pelo Horizon ou por APIs, suportando diversos formatos de imagem.
     \item \textbf{Horizon (Dashboard): } Horizon é a interface gráfica baseada na web do OpenStack. Ela permite aos usuários e administradores gerenciar todos os serviços disponíveis de maneira intuitiva, incluindo a criação de instâncias, configuração de redes e monitoramento de recursos.
     \item \textbf{Heat (Orchestration): } Heat é o serviço de orquestração que automatiza o provisionamento e gerenciamento de infraestrutura usando templates YAML. Com Heat, é possível definir pilhas de recursos e automatizar sua criação e configuração, facilitando a implementação de Infraestrutura como Código (IaC), também aceita implementações com Terraform.
@@ -424,13 +424,13 @@ Discutiremos em mais detalhes como funcionam internamente cada serviços mencion
 
 \subsection{Nova (Compute)}
 
-O \textbf{Nova} é o serviço de computação do OpenStack, responsável por gerenciar o ciclo de vida das instâncias de máquinas virtuais (VMs) e contêineres. Atuando como o motor de computação na nuvem, ele permite que os usuários provisionem e escalem recursos de maneira eficiente. Para provisionar uma instância funcional e acessível, o Nova interage com outros serviços do OpenStack, como Glance, Neutron, Keystone e Placement.
+O \textbf{Nova} é o serviço de computação do OpenStack, responsável por gerenciar o ciclo de vida das instâncias de máquinas virtuais (VMs) e containeres. Atuando como o motor de computação na nuvem, ele permite que os usuários provisionem e escalem recursos de maneira eficiente. Para provisionar uma instância funcional e acessível, o Nova interage com outros serviços do OpenStack, como Glance, Neutron, Keystone e Placement.
 
 As principais funcionalidades do Nova incluem:
 
 \begin{itemize}
     \item \textbf{Provisionamento de Instâncias:} Criação de instâncias de VMs com diferentes configurações de CPU, memória e armazenamento, atendendo a diversas necessidades de computação.
-    \item \textbf{Suporte a Contêineres:} Execução de contêineres, proporcionando uma camada adicional de flexibilidade e eficiência.
+    \item \textbf{Suporte a containeres:} Execução de containeres, proporcionando uma camada adicional de flexibilidade e eficiência.
     \item \textbf{Escalabilidade:} Administração de grandes quantidades de instâncias, distribuídas em diversos hosts e regiões, com alta escalabilidade.
     \item \textbf{Integração com Outros Componentes:} Interação transparente com serviços como Neutron para gerenciamento de rede e Cinder para armazenamento em blocos, garantindo alocação coordenada e eficiente dos recursos.
 \end{itemize}
@@ -613,7 +613,7 @@ O Cinder é crucial para aplicações que exigem armazenamento de dados persiste
 
 \subsection{Swift (Object Storage)}
 
-O \textbf{Swift} é o serviço de armazenamento de objetos, projetado para armazenar e recuperar grandes volumes de dados não estruturados de forma escalável e redundante. Diferente do armazenamento em bloco, o Swift armazena dados como objetos, que são agrupados em contêineres e acessados via uma API RESTful, sem a necessidade de gerenciar um sistema de arquivos tradicional ~\citep{OpenStackSwitft}, segue a mesma ideia do \textit{S3 AWS}, assim você consegue salvar todos os arquivos e acessar eles pelo ID de forma eficiênte via API.
+O \textbf{Swift} é o serviço de armazenamento de objetos, projetado para armazenar e recuperar grandes volumes de dados não estruturados de forma escalável e redundante. Diferente do armazenamento em bloco, o Swift armazena dados como objetos, que são agrupados em containeres e acessados via uma API RESTful, sem a necessidade de gerenciar um sistema de arquivos tradicional ~\citep{OpenStackSwitft}, segue a mesma ideia do \textit{S3 AWS}, assim você consegue salvar todos os arquivos e acessar eles pelo ID de forma eficiênte via API.
 
 O armazenamento de objetos encapsula dados em unidades chamadas objetos, que incluem tanto os dados quanto seus metadados e atributos. Essa abordagem permite um gerenciamento mais flexível e escalável dos dados, distribuindo a carga de trabalho entre dispositivos de armazenamento inteligentes, conhecidos como \textit{Object-based Storage Devices (OSDs)}, que oferecem alta performance e segurança em ambientes de computação distribuída"~\citep{panasas2007object}.
 
@@ -623,7 +623,7 @@ As principais funcionalidades do Swift incluem:
     \item \textbf{Armazenamento Escalável de Objetos:} Permite armazenar uma quantidade ilimitada de dados distribuídos entre múltiplos servidores, garantindo escalabilidade horizontal.
     \item \textbf{Redundância e Replicação:} Implementa replicação automática dos dados para assegurar alta disponibilidade e durabilidade, mesmo em caso de falhas de hardware.
     \item \textbf{Acesso via API RESTful:} Os dados podem ser acessados e gerenciados através de uma API RESTful, facilitando a integração com aplicações e serviços web.
-    \item \textbf{Gerenciamento de Contêineres:} Organiza os objetos em contêineres, permitindo que os usuários agrupem dados logicamente e definam políticas de acesso específicas.
+    \item \textbf{Gerenciamento de containeres:} Organiza os objetos em containeres, permitindo que os usuários agrupem dados logicamente e definam políticas de acesso específicas.
     \item \textbf{Versionamento e Auditoria:} Suporta versionamento de objetos e auditoria de acessos, garantindo controle sobre as mudanças e acesso aos dados.
 \end{itemize}
 
@@ -673,7 +673,7 @@ O Heat é ideal para automatizar a implementação e o gerenciamento de infraest
 
 \subsection{Trove (Database as a Service)}
 
-O \textbf{Trove} é o serviço de banco de dados como serviço (DBaaS) do OpenStack, projetado para simplificar o gerenciamento e a operação de bancos de dados relacionais e não relacionais em ambientes de nuvem. O Trove permite aos usuários provisionar, configurar, operar e escalar instâncias de banco de dados com facilidade, utilizando uma interface unificada e integrada ao ecossistema OpenStack~\citep1{OpenStackTrove}.
+O \textbf{Trove} é o serviço de banco de dados como serviço (DBaaS) do OpenStack, projetado para simplificar o gerenciamento e a operação de bancos de dados relacionais e não relacionais em ambientes de nuvem. O Trove permite aos usuários provisionar, configurar, operar e escalar instâncias de banco de dados com facilidade, utilizando uma interface unificada e integrada ao ecossistema OpenStack~\citep{OpenStackTrove}.
 
 O Trove possibilita o gerenciamento de múltiplos bancos de dados através de uma API RESTful, oferecendo suporte para diversos tipos de bancos de dados, como MySQL, PostgreSQL, MongoDB, entre outros. Isso permite que as organizações mantenham uma infraestrutura de banco de dados flexível e escalável, sem a complexidade tradicional associada à administração de bancos de dados em larga escala.
 
